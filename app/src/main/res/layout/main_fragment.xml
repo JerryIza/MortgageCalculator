@@ -3,12 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+
     <data>
         <variable
-        name="myInput"
-        type="com.example.mortgagecalculator.ui.main.MortgageInput"/>
-
+            name="myInput"
+            type="com.example.mortgagecalculator.ui.main.MortgageInput" />
+        <variable
+            name="onTextChanged"
+            type="androidx.databinding.adapters.TextViewBindingAdapter.OnTextChanged" />
     </data>
+
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main"
@@ -53,45 +58,6 @@
 
 
                     <EditText
-                        android:id="@+id/interestAmount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:hint="Interest %"
-                        android:inputType="numberDecimal"
-                        android:textAlignment="center"
-                        android:textSize="14sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/loanAmount"
-                        android:text="@={myInput.inputInterest}"
-                        />
-
-                    <EditText
-                        android:id="@+id/downPayment"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:hint="Down Payment"
-                        android:inputType="numberDecimal"
-                        android:textAlignment="center"
-                        android:textSize="14sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/loanYears"
-                        android:text="@={myInput.inputDownPayment}"/>
-
-                    <Button
-                        android:id="@+id/btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="32dp"
-                        android:text="BTN"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/downPayment"
-
-                        />
-
-                    <EditText
                         android:id="@+id/loanAmount"
                         style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox"
                         android:layout_width="wrap_content"
@@ -105,6 +71,38 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         android:text="@={myInput.inputLoan}"
+
+
+                        />
+
+
+                    <EditText
+                        android:id="@+id/interestAmount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="Interest %"
+                        android:inputType="numberDecimal"
+                        android:textAlignment="center"
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/loanAmount"
+                        android:text="@={myInput.inputInterest}"
+                        />
+
+
+                    <EditText
+                        android:id="@+id/downPayment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="Down Payment"
+                        android:inputType="numberDecimal"
+                        android:textAlignment="center"
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/loanYears"
+                        android:text="@={myInput.inputDownPayment}"
 
                         />
 
@@ -121,7 +119,23 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/interestAmount"
                         android:text="@={myInput.inputYears}"
-                       />
+
+                        />
+
+                    <Button
+                        android:id="@+id/btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="32dp"
+                        android:text="BTN"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/downPayment"
+
+
+                        />
+
+
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

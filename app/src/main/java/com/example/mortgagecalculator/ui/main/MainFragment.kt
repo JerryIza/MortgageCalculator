@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.mortgagecalculator.databinding.MainFragmentBinding
+import kotlinx.android.synthetic.main.main_fragment.*
 import kotlin.math.pow
 
 
@@ -17,22 +18,29 @@ class MainFragment : Fragment() {
         fun newInstance() = MainFragment()
     }
 
+
+
     private lateinit var viewModel: MainViewModel
-
-
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         val binding = MainFragmentBinding.inflate(inflater)
-        val initialPrincipal = binding.loanAmount.toString().toDouble()
-        val loanYears = binding.loanYears.toString().toDouble()
-        val interest = binding.interestAmount.toString().toDouble()
-        val downPayment = binding.downPayment.toString().toDouble()
+        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
+
+        val MyInput = MortgageInput(
+            "10000","5","30","1")
+
+        val initialPrincipal = MyInput.inputLoan.toDouble()
+        val loanYears = MyInput.inputYears.toDouble()
+        val interest = MyInput.inputInterest.toDouble()
+        val downPayment = MyInput.inputDownPayment.toDouble()
 
 
         fun quickMaths(): Double {
+
+
 
             val nOfPayments = loanYears.times(12)
             val calculatedInt = interest.div((100 * 12))
@@ -67,8 +75,6 @@ class MainFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        // TODO: Use the ViewModel
     }
 
 }

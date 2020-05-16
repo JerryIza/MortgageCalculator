@@ -1,8 +1,5 @@
 package com.example.mortgagecalculator.ui.main
 
-
-
-
     data class MortgageInput(
         var inputLoan:  String = "",
         var inputInterest: String = "",

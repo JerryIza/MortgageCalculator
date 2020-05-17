@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
 import com.example.mortgagecalculator.databinding.MainFragmentBinding
 import kotlinx.android.synthetic.main.main_fragment.*
 import kotlin.math.pow
@@ -23,19 +24,18 @@ class MainFragment : Fragment() {
     private lateinit var viewModel: MainViewModel
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding = MainFragmentBinding.inflate(inflater)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
 
-        val MyInput = MortgageInput(
-            "10000","5","30","1")
 
-        val initialPrincipal = MyInput.inputLoan.toDouble()
-        val loanYears = MyInput.inputYears.toDouble()
-        val interest = MyInput.inputInterest.toDouble()
-        val downPayment = MyInput.inputDownPayment.toDouble()
+
+        val initialPrincipal = binding.loanAmount.text.toString().toDouble()
+        val loanYears = binding.loanYears.text.toString().toDouble()
+        val interest = binding.interestAmount.text.toString().toDouble()
+        val downPayment = binding.downPayment.text.toString().toDouble()
 
 
         fun quickMaths(): Double {

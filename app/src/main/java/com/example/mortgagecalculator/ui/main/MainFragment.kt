@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.RecyclerView
+import androidx.navigation.findNavController
+import com.example.mortgagecalculator.R
 import com.example.mortgagecalculator.databinding.MainFragmentBinding
 import kotlinx.android.synthetic.main.main_fragment.*
 import kotlin.math.pow
@@ -20,19 +22,17 @@ class MainFragment : Fragment() {
     }
 
 
-
     private lateinit var viewModel: MainViewModel
-
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding = MainFragmentBinding.inflate(inflater)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
+        var principal = binding.loanAmount.text.toString().toDouble()
 
 
-
-        val initialPrincipal = binding.loanAmount.text.toString().toDouble()
+        val initialPrincipal = principal
         val loanYears = binding.loanYears.text.toString().toDouble()
         val interest = binding.interestAmount.text.toString().toDouble()
         val downPayment = binding.downPayment.text.toString().toDouble()
@@ -69,6 +69,11 @@ class MainFragment : Fragment() {
 
         }
 
+
+        binding.navBtn.setOnClickListener{
+            view?.findNavController()
+                ?.navigate(R.id.action_mainFragment_to_scheduleFragment3)
+        }
 
         return binding.root
     }

@@ -17,6 +17,8 @@
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:context="com.example.mortgagecalculator.MainActivity"
-            tools:listitem="@layout/schedule_list"/>
+            tools:listitem="@layout/schedule_list"
+
+            />
     </ScrollView>
 </layout>

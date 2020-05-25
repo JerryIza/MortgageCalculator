@@ -62,15 +62,12 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:ems="10"
-                        android:hint="Loan"
+                        android:hint="@string/loan"
                         android:inputType="number"
                         android:textAlignment="center"
                         android:textSize="14sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:text="2000000"
-
-
                         />
 
 
@@ -85,7 +82,7 @@
                         android:textSize="14sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/loanAmount"
-                        android:text="5"
+                        android:text="@string/_5"
                         />
 
 
@@ -100,7 +97,7 @@
                         android:textSize="14sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/loanYears"
-                        android:text="100"
+                        android:text="@string/_100"
 
                         />
 
@@ -116,7 +113,7 @@
                         android:textSize="14sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/interestAmount"
-                        android:text="30"
+                        android:text="@string/_30"
 
                         />
 

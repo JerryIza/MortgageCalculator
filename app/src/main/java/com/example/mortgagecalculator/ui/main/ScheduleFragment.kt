@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mortgagecalculator.R
 import com.example.mortgagecalculator.adapters.ScheduleAdapter
 import com.example.mortgagecalculator.data.ScheduleOutput
-import com.example.mortgagecalculator.databinding.ScheduleFragmentBinding
 import kotlinx.android.synthetic.main.schedule_fragment.*
 
 class ScheduleFragment: Fragment() {

@@ -1,11 +1,15 @@
 package com.example.mortgagecalculator.ui.main
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -17,30 +21,44 @@ import kotlin.math.pow
 
 class MainFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = MainFragment()
-    }
-
-
     private lateinit var viewModel: MainViewModel
 
+    override fun onCreateView(inflater: LayoutInflater,
+                              container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? =
+        inflater.inflate(R.layout.main_fragment, container, false)
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val binding = MainFragmentBinding.inflate(inflater)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
-        var principal = binding.loanAmount.text.toString().toDouble()
+        var initialLoanAmount = 0.0
+
+        val loanYears = loanYears.text.toString().toDouble()
+        val interest = interestAmount.text.toString().toDouble()
+        val downPayment = downPayment.text.toString().toDouble()
+
+        loanAmount.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable) {
+
+            }
+
+            override fun beforeTextChanged(s: CharSequence, start: Int,
+                                           count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int,
+                                       before: Int, count: Int) {
+               textView.setText(s)
+            }
+        })
 
 
-        val initialPrincipal = principal
-        val loanYears = binding.loanYears.text.toString().toDouble()
-        val interest = binding.interestAmount.text.toString().toDouble()
-        val downPayment = binding.downPayment.text.toString().toDouble()
 
 
         fun quickMaths(): Double {
-
-
 
             val nOfPayments = loanYears.times(12)
             val calculatedInt = interest.div((100 * 12))
@@ -55,7 +73,7 @@ class MainFragment : Fragment() {
                     it
                 )
             }).div(calExponent - 1)).let {
-                (downPayment.let { initialPrincipal.minus(it) }).times(
+                (downPayment.let { initialLoanAmount.minus(it) }).times(
                     it
                 )
             }
@@ -64,22 +82,19 @@ class MainFragment : Fragment() {
 
         val tehe = quickMaths()
 
-        binding.btn.setOnClickListener{
-            binding.textView.text = tehe.toString()
+        btn.setOnClickListener{
+            textView.text = tehe.toString()
 
         }
 
 
-        binding.navBtn.setOnClickListener{
+
+
+        navBtn.setOnClickListener{
             view?.findNavController()
                 ?.navigate(R.id.action_mainFragment_to_scheduleFragment3)
         }
 
-        return binding.root
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
     }
 
 }

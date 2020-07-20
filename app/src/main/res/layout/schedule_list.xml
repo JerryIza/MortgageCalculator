@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <data>
-
-    </data>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -18,7 +16,9 @@
                 android:id="@+id/testLoan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
                 android:text="TextView"
+                android:textAlignment="center"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,15 +27,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                app:layout_constraintEnd_toStartOf="@+id/testInterest"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toStartOf="@+id/testYear"
                 app:layout_constraintStart_toEndOf="@+id/testLoan"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/testInterest"
+                android:id="@+id/testYear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
                 android:text="TextView"
+                android:textAlignment="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>

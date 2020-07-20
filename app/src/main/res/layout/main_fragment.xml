@@ -4,28 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools">
 
 
-
-
-    <data>
-
-
-    </data>
-
-
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        android:background="@color/colorAccent">
+        android:background="@color/colorPrimary">
 
 
         <ScrollView
             android:id="@+id/scrollView2"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="@color/colorAccent"
+            android:background="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -82,12 +73,11 @@
                         android:textSize="14sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/loanAmount"
-                        android:text="@string/_5"
                         />
 
 
                     <EditText
-                        android:id="@+id/downPayment"
+                        android:id="@+id/moneyDown"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ems="10"
@@ -97,7 +87,6 @@
                         android:textSize="14sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/loanYears"
-                        android:text="@string/_100"
 
                         />
 
@@ -113,7 +102,6 @@
                         android:textSize="14sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/interestAmount"
-                        android:text="@string/_30"
 
                         />
 
@@ -127,7 +115,7 @@
 
 
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/downPayment" />
+                        app:layout_constraintTop_toBottomOf="@+id/moneyDown" />
 
                     <Button
                         android:id="@+id/navBtn"

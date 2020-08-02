@@ -1,45 +1,35 @@
 package com.example.mortgagecalculator.ui.main
 
+import android.provider.SyncStateContract
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.example.mortgagecalculator.model.ScheduleOutput
 import kotlin.collections.ArrayList
 
 @Suppress("NAME_SHADOWING")
-class MainViewModel : ViewModel()
-    {
+class MainViewModel : ViewModel() {
 
-        var scheduleLiveData : MutableLiveData<ArrayList<ScheduleOutput>?>
+    val scheduleLiveData : MutableLiveData<ArrayList<ScheduleOutput>?>
 
         var scheduleArrayList: ArrayList<ScheduleOutput>? = null
 
-
-        fun getListDetails() {
+        private fun getListDetails() {
             populateList()
             scheduleLiveData.value = scheduleArrayList
         }
 
 
-        fun populateList() {
-
-            val output = ScheduleOutput("", arrayListOf(),"")
-
-
-            output.title = "hehehehe"
-            output.something = "jaja"
-            for (i in 0..2) {
-                output.year.add(i.toString())
-            }
+        private fun populateList() {
+            val output = ScheduleOutput("YEAR", "SOMETHING")
             scheduleArrayList = ArrayList()
-            for (i in 1..50){
-                scheduleArrayList!!.add(output)
+            scheduleArrayList!!.add(output)
             }
-        }
-            //override??!?!?!?!?
-            // initialize with out on click listener.
+
+
         init {
             scheduleLiveData = MutableLiveData()
-
             getListDetails()
         }
 

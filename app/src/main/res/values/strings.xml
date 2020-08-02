@@ -5,4 +5,6 @@
     <string name="_5">5</string>
     <string name="_100">100</string>
     <string name="_30">30</string>
+    <string name="title_schedule">Schedule</string>
+    <string name="title_main">MortgageCalc</string>
 </resources>

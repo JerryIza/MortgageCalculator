@@ -13,7 +13,6 @@
             android:layout_width="162dp"
             android:layout_height="94dp"
             android:text="Button"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/scheduleRecycler" />
@@ -25,7 +24,6 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-
             app:layout_constraintTop_toTopOf="parent"
             tools:context="com.example.mortgagecalculator.MainActivity"
             tools:listitem="@layout/schedule_list" />

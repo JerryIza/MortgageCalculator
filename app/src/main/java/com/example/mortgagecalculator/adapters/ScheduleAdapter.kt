@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mortgagecalculator.R
-import com.example.mortgagecalculator.databinding.MainFragmentBinding.inflate
 import com.example.mortgagecalculator.model.ScheduleOutput
 import kotlinx.android.synthetic.main.schedule_list.view.*
 
@@ -25,4 +24,5 @@ class ScheduleAdapter(private val list: List<ScheduleOutput>): RecyclerView.Adap
     }
 
     override fun getItemCount() = list.size
+
 }

@@ -8,8 +8,8 @@
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        android:background="@color/colorPrimary">
+        android:background="@color/colorPrimary"
+        android:fitsSystemWindows="true">
 
 
         <ScrollView
@@ -32,8 +32,8 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
 
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="393dp"
+                    android:layout_height="389dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
@@ -55,11 +55,12 @@
                         android:ems="10"
                         android:hint="@string/loan"
                         android:inputType="number"
+                        android:text="100000"
                         android:textAlignment="center"
                         android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        />
+                        app:layout_constraintTop_toTopOf="parent" />
 
 
                     <EditText
@@ -69,11 +70,12 @@
                         android:ems="10"
                         android:hint="Interest %"
                         android:inputType="numberDecimal"
+                        android:text="5"
                         android:textAlignment="center"
                         android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/loanAmount"
-                        />
+                        app:layout_constraintTop_toBottomOf="@+id/loanAmount" />
 
 
                     <EditText
@@ -85,10 +87,10 @@
                         android:inputType="numberDecimal"
                         android:textAlignment="center"
                         android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/loanYears"
 
-                        />
+                        app:layout_constraintTop_toBottomOf="@+id/loanYears" />
 
                     <EditText
                         android:id="@+id/loanYears"
@@ -98,33 +100,25 @@
                         android:ems="10"
                         android:hint="Years"
                         android:inputType="number"
+                        android:text="30"
                         android:textAlignment="center"
                         android:textSize="14sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/interestAmount"
+                        app:layout_constraintEnd_toEndOf="parent"
 
-                        />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/interestAmount" />
 
                     <Button
                         android:id="@+id/btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="32dp"
                         android:layout_marginTop="32dp"
                         android:text="BTN"
 
 
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/moneyDown" />
-
-                    <Button
-                        android:id="@+id/navBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="32dp"
-                        android:text="Nav"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/btn" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

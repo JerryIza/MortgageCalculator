@@ -20,6 +20,14 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -42,6 +50,9 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$rootProject.navigationVersion"
     implementation "androidx.navigation:navigation-fragment:$rootProject.nav_version"
     implementation "androidx.navigation:navigation-ui:$rootProject.nav_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.0-alpha06"
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
+
 
     //Testing Implementation
     testImplementation 'junit:junit:4.12'

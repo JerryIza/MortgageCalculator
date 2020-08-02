@@ -13,30 +13,20 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/testLoan"
+                android:id="@+id/testYeet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
+                android:layout_marginStart="64dp"
                 android:text="TextView"
                 android:textAlignment="center"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/testYeet"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textAlignment="center"
-                app:layout_constraintEnd_toStartOf="@+id/testYear"
-                app:layout_constraintStart_toEndOf="@+id/testLoan"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
                 android:id="@+id/testYear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="32dp"
+                android:layout_marginEnd="64dp"
                 android:text="TextView"
                 android:textAlignment="center"
                 app:layout_constraintEnd_toEndOf="parent"

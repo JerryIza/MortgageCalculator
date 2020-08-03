@@ -43,23 +43,40 @@ class MainFragment : Fragment() {
         viewModel = activity?.run { ViewModelProvider(this).get(MainViewModel::class.java)
         } ?: throw Exception("invalid Activity")
 
-        //calculation defauls
-        var tehe = MortgageDefaults(100000.00, 30.00 , 5.0)
 
-        var initialLoanAmount = tehe.loanAmount
-        var years = tehe.yearAmount.times(12)
-        var interest = tehe.interestAmount.div(100 * 12)
-        var downPayment = 0.toDouble()
+        var initialLoanAmount :Double
+        var years: Double
+        var interest :Double
+        var downPayment : Double
+
+
+        //getting data class variables from ViewModel state.
+        initialLoanAmount = viewModel.state.value!!.loanAmount
+        val loanInput: String = initialLoanAmount.toString()
+        mortgageLoan.setText(loanInput)
+
+        years = viewModel.state.value!!.yearAmount
+        val yearInput: String = years.toString()
+        mortgageYears.setText(yearInput)
+
+        interest = viewModel.state.value!!.interestAmount
+        val interestInput: String = interest.toString()
+        mortgageInterest.setText(interestInput)
+
+        downPayment = viewModel.state.value!!.downAmount
+        val downInput: String = downPayment.toString()
+        mortgageDown.setText(downInput)
+
 
 
         fun quickMaths(): Double {
-
-            val calExponent = (interest.plus(1).let {
-                years.let { it1 ->
+            val i = interest.div(100 * 12)
+            val calExponent = (i.plus(1).let {
+                years.times(12).let { it1 ->
                     it.pow(it1)
                 }
             })
-            return ((calExponent.let { interest.times(it) }).div(calExponent - 1)).let {
+            return ((calExponent.let { i.times(it) }).div(calExponent - 1)).let {
                 (downPayment.let { initialLoanAmount.minus(it) }).times(it)
             }
         }
@@ -71,27 +88,11 @@ class MainFragment : Fragment() {
             for (i in 1..50) {
                 viewModel.scheduleArrayList?.add(ScheduleOutput(i.toString(), i.toString()))
             }
-
-
-        }
-
-        btn.setOnClickListener {
-            viewModel.state.observe(viewLifecycleOwner, Observer {
-                it?.let {
-                    initialLoanAmount = it.loanAmount.absoluteValue
-                    getResults()
-                    var userInput: String = initialLoanAmount.toString()
-                    loanAmount.setText(userInput)
-                }
-            })
         }
 
 
-        loanAmount.addTextChangedListener(object : TextWatcher {
-            //a crash is caused everytime value goes to zero
+        mortgageLoan.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
-                getResults()
-                viewModel.state.value?.loanAmount = s.toString().toDouble()
             }
 
             override fun beforeTextChanged(
@@ -107,14 +108,42 @@ class MainFragment : Fragment() {
             ) {
                 if (s.isNotEmpty()) {
                     initialLoanAmount = s.toString().toDouble()
+                    //setting new var values to dataclass in ViewModel State.
+                    viewModel.state.value?.loanAmount = s.toString().toDouble()
                     getResults()
-
 
                 }
             }
         })
 
-        interestAmount.addTextChangedListener(object : TextWatcher {
+        mortgageYears.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable) {
+
+            }
+
+            override fun beforeTextChanged(
+                s: CharSequence, start: Int,
+                count: Int, after: Int
+            ) {
+
+            }
+
+            override fun onTextChanged(
+                s: CharSequence, start: Int,
+                before: Int, count: Int
+            ) {
+                if (s.isNotEmpty()) {
+                    years = s.toString().toDouble()
+                    viewModel.state.value?.yearAmount = s.toString().toDouble()
+                    getResults()
+
+                }
+            }
+        })
+
+
+        mortgageInterest.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(s: Editable) {
 
@@ -133,32 +162,8 @@ class MainFragment : Fragment() {
                 before: Int, count: Int
             ) {
                 if (s.isNotEmpty()) {
-                    interest = s.toString().toDouble().div((100 * 12))
-                    getResults()
-
-                }
-            }
-        })
-
-        loanYears.addTextChangedListener(object : TextWatcher {
-
-            override fun afterTextChanged(s: Editable) {
-
-            }
-
-            override fun beforeTextChanged(
-                s: CharSequence, start: Int,
-                count: Int, after: Int
-            ) {
-
-            }
-
-            override fun onTextChanged(
-                s: CharSequence, start: Int,
-                before: Int, count: Int
-            ) {
-                if (s.isNotEmpty()) {
-                    years = s.toString().toDouble().times(12)
+                    interest = s.toString().toDouble()
+                    viewModel.state.value?.interestAmount = s.toString().toDouble()
                     getResults()
 
                 }
@@ -166,7 +171,8 @@ class MainFragment : Fragment() {
         })
 
 
-        moneyDown.addTextChangedListener(object : TextWatcher {
+
+        mortgageDown.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(s: Editable) {
                 //viewModel.saveName(s.toString().toDouble())
@@ -185,10 +191,13 @@ class MainFragment : Fragment() {
             ) {
                 if (s.isNotEmpty()) {
                     downPayment = s.toString().toDouble()
+                    years = s.toString().toDouble()
+                    viewModel.state.value?.downAmount = s.toString().toDouble()
                     getResults()
                 }
             }
         })
+
         getResults()
     }
 

@@ -55,7 +55,7 @@
                         android:ems="10"
                         android:hint="@string/loan"
                         android:inputType="number"
-                        android:text="100000"
+                        android:text="@string/_100000"
                         android:textAlignment="center"
                         android:textSize="14sp"
                         app:layout_constraintEnd_toEndOf="parent"

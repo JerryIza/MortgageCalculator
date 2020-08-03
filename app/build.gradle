@@ -51,7 +51,6 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment:$rootProject.nav_version"
     implementation "androidx.navigation:navigation-ui:$rootProject.nav_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.0-alpha06"
-    implementation 'androidx.viewpager2:viewpager2:1.0.0'
 
 
     //Testing Implementation

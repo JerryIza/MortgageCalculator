@@ -7,11 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mortgagecalculator.R
 import com.example.mortgagecalculator.adapters.ScheduleAdapter
+import com.example.mortgagecalculator.model.MortgageDefaults
 import com.example.mortgagecalculator.model.ScheduleOutput
 import kotlinx.android.synthetic.main.schedule_fragment.*
 import kotlinx.android.synthetic.main.schedule_list.*
@@ -20,6 +23,11 @@ import java.util.ArrayList
 
 
 class ScheduleFragment: Fragment() {
+
+
+
+
+
 
     private lateinit var viewModel: MainViewModel
 

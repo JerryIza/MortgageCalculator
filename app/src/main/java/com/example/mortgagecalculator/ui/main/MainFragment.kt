@@ -1,6 +1,5 @@
 package com.example.mortgagecalculator.ui.main
 
-import android.app.Application
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,15 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.SavedStateViewModelFactory
+import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
+import com.example.mortgagecalculator.MainActivity
 import com.example.mortgagecalculator.R
 import com.example.mortgagecalculator.model.MortgageDefaults
 import com.example.mortgagecalculator.model.ScheduleOutput
 import kotlinx.android.synthetic.main.main_fragment.*
 import kotlinx.android.synthetic.main.schedule_fragment.*
+import kotlin.math.absoluteValue
 import kotlin.math.pow
 
 
@@ -39,13 +39,14 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         viewModel = activity?.run { ViewModelProvider(this).get(MainViewModel::class.java)
         } ?: throw Exception("invalid Activity")
 
+        //calculation defauls
+        var tehe = MortgageDefaults(100000.00, 30.00 , 5.0)
 
-        var tehe = MortgageDefaults(10000.00, 30.00 , 5.0)
-
-        var initialLoanAmount = 100000.00
+        var initialLoanAmount = tehe.loanAmount
         var years = tehe.yearAmount.times(12)
         var interest = tehe.interestAmount.div(100 * 12)
         var downPayment = 0.toDouble()
@@ -63,7 +64,6 @@ class MainFragment : Fragment() {
             }
         }
 
-
         fun getResults() {
             textView.text = quickMaths().toString()
             viewModel.scheduleArrayList?.clear()
@@ -75,11 +75,23 @@ class MainFragment : Fragment() {
 
         }
 
+        btn.setOnClickListener {
+            viewModel.state.observe(viewLifecycleOwner, Observer {
+                it?.let {
+                    initialLoanAmount = it.loanAmount.absoluteValue
+                    getResults()
+                    var userInput: String = initialLoanAmount.toString()
+                    loanAmount.setText(userInput)
+                }
+            })
+        }
+
 
         loanAmount.addTextChangedListener(object : TextWatcher {
             //a crash is caused everytime value goes to zero
             override fun afterTextChanged(s: Editable) {
                 getResults()
+                viewModel.state.value?.loanAmount = s.toString().toDouble()
             }
 
             override fun beforeTextChanged(
@@ -96,6 +108,7 @@ class MainFragment : Fragment() {
                 if (s.isNotEmpty()) {
                     initialLoanAmount = s.toString().toDouble()
                     getResults()
+
 
                 }
             }

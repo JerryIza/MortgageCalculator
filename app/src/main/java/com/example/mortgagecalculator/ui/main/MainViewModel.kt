@@ -5,11 +5,21 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import com.example.mortgagecalculator.model.MortgageDefaults
 import com.example.mortgagecalculator.model.ScheduleOutput
 import kotlin.collections.ArrayList
 
 @Suppress("NAME_SHADOWING")
 class MainViewModel : ViewModel() {
+
+    private val _state = MutableLiveData<MortgageDefaults>()
+    val state : LiveData<MortgageDefaults> get() = _state
+
+    init {
+        _state.value = MortgageDefaults()
+    }
+    //_state.value = _state.value!!.copy(checking = true)
+
 
     val scheduleLiveData : MutableLiveData<ArrayList<ScheduleOutput>?>
 

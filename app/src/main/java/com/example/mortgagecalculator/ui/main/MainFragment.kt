@@ -110,7 +110,8 @@ class MainFragment : Fragment() {
                     newInterestPayment = ((interest.div(100 * 12))*mortgageHolder)
                     return mortgage-(monthlyPayment-((interest.div(100 * 12))*mortgage))
                         }
-                viewModel.scheduleArrayList?.add(ScheduleOutput(i.toString(), scheduleLoop().toString()))
+                viewModel.scheduleArrayList?.add(ScheduleOutput(i.toString(), scheduleLoop().toString(), interestPaymentHolder.toString(), principalHolder.toInt().toString()))
+
             }
         }
 

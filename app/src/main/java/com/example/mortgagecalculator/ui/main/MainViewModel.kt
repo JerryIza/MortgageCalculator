@@ -32,7 +32,7 @@ class MainViewModel : ViewModel() {
 
 
         private fun populateList() {
-            val output = ScheduleOutput("YEAR", "SOMETHING")
+            val output = ScheduleOutput("YEAR", "SOMETHING","INTEREST", "PRINCIPAL")
             scheduleArrayList = ArrayList()
             scheduleArrayList!!.add(output)
             }

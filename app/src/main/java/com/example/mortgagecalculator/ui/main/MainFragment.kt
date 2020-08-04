@@ -84,33 +84,31 @@ class MainFragment : Fragment() {
 
         fun getResults() {
             val monthlyPayment = quickMaths()
-            val firstInterestPayment = ((interest.div(100 * 12))*initialLoanAmount)
+            val firstInterestPayment = ((interest.div(100 * 12))*(initialLoanAmount-downPayment))
             val firstPrincipalPayment = monthlyPayment-firstInterestPayment
-            val mortgageAfterPayment = initialLoanAmount-firstPrincipalPayment
-            textView.text = monthlyPayment.toString()
-            firstMonthlyInterest.text = firstInterestPayment.toString()
-            firstMonthlyPrincipal.text = firstPrincipalPayment.toString()
-            firstPaymentMortgage.text = mortgageAfterPayment.toString()
+            val mortgageAfterPayment = (initialLoanAmount-downPayment)-firstPrincipalPayment
+            textView.text = monthlyPayment.toFloat().toString()
+            firstMonthlyInterest.text = firstInterestPayment.toFloat().toString()
+            firstMonthlyPrincipal.text = firstPrincipalPayment.toFloat().toString()
+            mortgageLeft.text = mortgageAfterPayment.toFloat().toString()
             //principal payment
-            scheduleTest.text = ((interest.div(100 * 12))*mortgageAfterPayment).toString()
             viewModel.scheduleArrayList?.clear()
             scheduleRecycler?.adapter?.notifyDataSetChanged()
-            var newAmount = initialLoanAmount
-            var newPrincipal = firstPrincipalPayment
-            var newInterestPayment = firstInterestPayment
-            for (i in 1..12) {
-                var interestPaymentHolder = newInterestPayment
-                var mortgageHolder = newAmount
-                var principalHolder = newPrincipal
 
-                fun scheduleLoop(): Double {
-                    var mortgage = mortgageHolder-principalHolder
-                    newAmount = mortgage-(monthlyPayment-((interest.div(100 * 12))*mortgage))
-                    newPrincipal = monthlyPayment-interestPaymentHolder
-                    newInterestPayment = ((interest.div(100 * 12))*mortgageHolder)
-                    return mortgage-(monthlyPayment-((interest.div(100 * 12))*mortgage))
-                        }
-                viewModel.scheduleArrayList?.add(ScheduleOutput(i.toString(), scheduleLoop().toString(), interestPaymentHolder.toString(), principalHolder.toInt().toString()))
+
+            var newInterestPayment = firstInterestPayment
+            var newPrincipal = firstPrincipalPayment
+            var newMortgage = mortgageAfterPayment
+            for (i in 1..360) {
+                val interestPaymentHolder = newInterestPayment
+                val principalHolder = newPrincipal
+                val mortgageHolder = newMortgage
+                //we have to move the scheduloutput for cleaner code
+                viewModel.scheduleArrayList?.add(ScheduleOutput(i.toString(), mortgageHolder.toFloat().toString(), interestPaymentHolder.toFloat().toString(), principalHolder.toFloat().toString()))
+                newInterestPayment = ((interest.div(100 * 12))*newMortgage)
+                newPrincipal = monthlyPayment-newInterestPayment
+                //here might not change in time
+                newMortgage =newMortgage-newPrincipal
 
             }
         }

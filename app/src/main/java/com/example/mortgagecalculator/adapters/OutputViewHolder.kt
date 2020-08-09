@@ -1,7 +1,6 @@
 package com.example.mortgagecalculator.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -14,21 +13,33 @@ class OutputViewHolder (inflater: LayoutInflater, parent: ViewGroup) :
     private var mInterestView: TextView? = null
     private var mPrincipalView: TextView? = null
     private var mSomethingView: TextView? = null
+    private var mPaidInterest: TextView? = null
+
 
     init {
         mYearView = itemView.findViewById(R.id.testYear)
         mInterestView = itemView.findViewById(R.id.testInterest)
         mPrincipalView = itemView.findViewById(R.id.testPrincipal)
         mSomethingView = itemView.findViewById(R.id.testYeet)
+        mPaidInterest = itemView.findViewById(R.id.cummulativeInterest)
     }
 
-    fun bind(output : ScheduleOutput)  {
+    fun bind(output: ScheduleOutput,
+        pos: Int,
+        listener: (Int) -> Unit)  {
         mYearView?.text = output.year
         mInterestView?.text = output.interest
         mPrincipalView?.text = output.principal
         mSomethingView?.text = output.something
+        mPaidInterest?.text = output.totalInterest
+
+            itemView.setOnClickListener {
+            listener(pos)
+        }
 
    }
+
+
 }
 
 

@@ -6,34 +6,31 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.mortgagecalculator.MainActivity
 import com.example.mortgagecalculator.R
-import com.example.mortgagecalculator.model.MortgageDefaults
 import com.example.mortgagecalculator.model.ScheduleOutput
 import kotlinx.android.synthetic.main.main_fragment.*
 import kotlinx.android.synthetic.main.schedule_fragment.*
-import kotlin.math.absoluteValue
 import kotlin.math.pow
 
 
-class MainFragment : Fragment() {
+class MainFragment : Fragment()  {
 
 
     private lateinit var viewModel: MainViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        retainInstance = true
-    }
+    lateinit var option : Spinner
+    lateinit var result : TextView
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? =
-        inflater.inflate(R.layout.main_fragment, container, false)
+                              savedInstanceState: Bundle?
+    ): View? = inflater.inflate(R.layout.main_fragment, container, false)
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,9 +41,9 @@ class MainFragment : Fragment() {
         } ?: throw Exception("invalid Activity")
 
 
-        var initialLoanAmount :Double
+        var initialLoanAmount : Double
         var years: Double
-        var interest :Double
+        var interest : Double
         var downPayment : Double
 
 
@@ -54,18 +51,24 @@ class MainFragment : Fragment() {
         initialLoanAmount = viewModel.state.value!!.loanAmount
         val loanInput: String = initialLoanAmount.toString()
         mortgageLoan.setText(loanInput)
-
+        //  these and below are reformatted
         years = viewModel.state.value!!.yearAmount
-        val yearInput: String = years.toString()
-        mortgageYears.setText(yearInput)
 
         interest = viewModel.state.value!!.interestAmount
-        val interestInput: String = interest.toString()
+        val interestInput: String = String.format("%,.2f", interest)
         mortgageInterest.setText(interestInput)
 
         downPayment = viewModel.state.value!!.downAmount
-        val downInput: String = downPayment.toString()
+        val wtf = downPayment
+        val downInput: String = String.format("%,.2f", wtf)
         mortgageDown.setText(downInput)
+
+
+        button.setOnClickListener {
+            downPayment = viewModel.state.value!!.downAmount
+            val motherbitch = downPayment
+            mortgageDown.setText(String.format("%,.2f", motherbitch))
+        }
 
 
 
@@ -87,11 +90,10 @@ class MainFragment : Fragment() {
             val firstInterestPayment = ((interest.div(100 * 12))*(initialLoanAmount-downPayment))
             val firstPrincipalPayment = monthlyPayment-firstInterestPayment
             val mortgageAfterPayment = (initialLoanAmount-downPayment)-firstPrincipalPayment
-            textView.text = monthlyPayment.toFloat().toString()
-            firstMonthlyInterest.text = firstInterestPayment.toFloat().toString()
-            firstMonthlyPrincipal.text = firstPrincipalPayment.toFloat().toString()
-            mortgageLeft.text = mortgageAfterPayment.toFloat().toString()
-            //principal payment
+            val numberQuotas = (years*12).toInt()
+            moPayment.text = String.format("%,.2f", monthlyPayment)
+            numberofPayments.text = numberQuotas.toString()
+
             viewModel.scheduleArrayList?.clear()
             scheduleRecycler?.adapter?.notifyDataSetChanged()
 
@@ -99,23 +101,61 @@ class MainFragment : Fragment() {
             var newInterestPayment = firstInterestPayment
             var newPrincipal = firstPrincipalPayment
             var newMortgage = mortgageAfterPayment
-            for (i in 1..360) {
-                val interestPaymentHolder = newInterestPayment
-                val principalHolder = newPrincipal
-                val mortgageHolder = newMortgage
+            var paidInterest  = firstInterestPayment
+
+
+
+            for (i in 1..numberQuotas) {
                 //we have to move the scheduloutput for cleaner code
-                viewModel.scheduleArrayList?.add(ScheduleOutput(i.toString(), mortgageHolder.toFloat().toString(), interestPaymentHolder.toFloat().toString(), principalHolder.toFloat().toString()))
+                viewModel.scheduleArrayList?.add(ScheduleOutput((i).toString(),
+                    String.format("%,.2f", newMortgage),
+                    String.format("%,.2f", newInterestPayment),
+                    String.format("%,.2f", newPrincipal),
+                    String.format("%,.2f", paidInterest)
+                ))
+                //updating vars happens everytime the loop is run
                 newInterestPayment = ((interest.div(100 * 12))*newMortgage)
                 newPrincipal = monthlyPayment-newInterestPayment
-                //here might not change in time
-                newMortgage =newMortgage-newPrincipal
+                newMortgage -= newPrincipal
+                paidInterest += newInterestPayment
+            }
+
+            //need to remove "," other wise parsing will fail
+            val lastInterestPosition = (viewModel.scheduleArrayList!!.last().totalInterest)
+            val formattedInterest = lastInterestPosition.replace(Regex(","), "")
+            val wtf = (formattedInterest.toDouble()+ initialLoanAmount)
+
+            totalAmount.text = String.format("%,.2f", wtf)
+            totalInterest.text = lastInterestPosition
+        }
+
+        option = yearSpinner
+        result = spinnerresults
+
+        val options = arrayOf("30","15")
+
+        option.adapter = context?.let { ArrayAdapter<String>(it, android.R.layout.simple_spinner_item, options) }
+
+        option.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                result.text = "Select an option "
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                result.text = options[position]
+                val s = options[position]
+                years = s.toDouble()
+                viewModel.state.value?.yearAmount = s.toDouble()
+                getResults()
 
             }
         }
 
 
+
         mortgageLoan.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
+
             }
 
             override fun beforeTextChanged(
@@ -131,40 +171,13 @@ class MainFragment : Fragment() {
             ) {
                 if (s.isNotEmpty()) {
                     initialLoanAmount = s.toString().toDouble()
-                    //setting new var values to dataclass in ViewModel State.
                     viewModel.state.value?.loanAmount = s.toString().toDouble()
                     getResults()
+                    //setting new var values to dataclass in ViewModel State.
 
                 }
             }
         })
-
-        mortgageYears.addTextChangedListener(object : TextWatcher {
-
-            override fun afterTextChanged(s: Editable) {
-
-            }
-
-            override fun beforeTextChanged(
-                s: CharSequence, start: Int,
-                count: Int, after: Int
-            ) {
-
-            }
-
-            override fun onTextChanged(
-                s: CharSequence, start: Int,
-                before: Int, count: Int
-            ) {
-                if (s.isNotEmpty()) {
-                    years = s.toString().toDouble()
-                    viewModel.state.value?.yearAmount = s.toString().toDouble()
-                    getResults()
-
-                }
-            }
-        })
-
 
         mortgageInterest.addTextChangedListener(object : TextWatcher {
 
@@ -193,34 +206,48 @@ class MainFragment : Fragment() {
             }
         })
 
-
-
         mortgageDown.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(s: Editable) {
-                //viewModel.saveName(s.toString().toDouble())
+                val fukubitch = viewModel.state.value!!.downAmount
+                println("3")
+                val motherbitch = fukubitch
+                println("4")
+                mortgageDown.removeTextChangedListener(this)
+                //as soon as format changes it goes to infinite loop, if it equal to text with add ,
+
+                mortgageDown.setText("$" + (String.format("%,.2f", motherbitch)))
+                mortgageDown.setSelection(mortgageDown.text.toString().length-3)
+                println("5")
+                mortgageDown.addTextChangedListener(this)
+                println("6")
+
+
             }
 
             override fun beforeTextChanged(
-                s: CharSequence, start: Int,
-                count: Int, after: Int
+                s: CharSequence, start: Int, count: Int, after: Int
             ) {
-
+                println("before text changed")
             }
-
             override fun onTextChanged(
-                s: CharSequence, start: Int,
-                before: Int, count: Int
+                s: CharSequence, start: Int, before: Int, count: Int
             ) {
                 if (s.isNotEmpty()) {
-                    downPayment = s.toString().toDouble()
-                    viewModel.state.value?.downAmount = s.toString().toDouble()
+                    println("1")
+
+                    //replace two values at once
+                    var textInput = s.toString().replace(",", "")
+                    textInput = textInput.replace("$", "")
+                    downPayment = textInput.toDouble()
+                    viewModel.state.value?.downAmount = textInput.toDouble()
                     getResults()
+                    println("2")
+
                 }
             }
         })
 
-        getResults()
     }
 
 }

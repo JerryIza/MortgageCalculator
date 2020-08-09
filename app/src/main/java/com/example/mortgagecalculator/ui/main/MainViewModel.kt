@@ -29,10 +29,9 @@ class MainViewModel : ViewModel() {
             populateList()
             scheduleLiveData.value = scheduleArrayList
         }
-
-
+        //this is where we change it.
         private fun populateList() {
-            val output = ScheduleOutput("YEAR", "SOMETHING","INTEREST", "PRINCIPAL")
+            val output = ScheduleOutput("YEAR", "SOMETHING","INTEREST", "PRINCIPAL", "totalInterest")
             scheduleArrayList = ArrayList()
             scheduleArrayList!!.add(output)
             }

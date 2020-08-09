@@ -7,4 +7,14 @@
     <string name="_30">30</string>
     <string name="title_schedule">Schedule</string>
     <string name="title_main">MortgageCalc</string>
+    <string name="principal">Principal</string>
+    <string name="interest">Interest</string>
+    <string name="no">No.</string>
+
+    <string-array name="years">
+        <item>15</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+    </string-array>
 </resources>

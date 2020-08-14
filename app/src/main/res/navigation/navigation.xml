@@ -6,7 +6,7 @@
     app:startDestination="@id/mainFragment">
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.example.mortgagecalculator.ui.main.MainFragment"
+        android:name="com.example.mortgagecalculator.ui.main.views.MainFragment"
         android:label="MainFragment"
         tools:layout="@layout/main_fragment"
         >
@@ -16,12 +16,19 @@
     </fragment>
     <fragment
         android:id="@+id/scheduleFragment"
-        android:name="com.example.mortgagecalculator.ui.main.ScheduleFragment"
+        android:name="com.example.mortgagecalculator.ui.main.views.ScheduleFragment"
         android:label="ScheduleFragment"
         tools:layout="@layout/schedule_fragment"
         >
         <action
             android:id="@+id/action_scheduleFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_scheduleFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.example.mortgagecalculator.ui.main.views.DetailFragment"
+        android:label="DetailFragment" />
 </navigation>

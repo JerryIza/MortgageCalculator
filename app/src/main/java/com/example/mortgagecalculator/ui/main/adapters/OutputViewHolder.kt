@@ -1,4 +1,4 @@
-package com.example.mortgagecalculator.adapters
+package com.example.mortgagecalculator.ui.main.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -21,13 +21,12 @@ class OutputViewHolder (inflater: LayoutInflater, parent: ViewGroup) :
         mInterestView = itemView.findViewById(R.id.testInterest)
         mPrincipalView = itemView.findViewById(R.id.testPrincipal)
         mSomethingView = itemView.findViewById(R.id.testYeet)
-        mPaidInterest = itemView.findViewById(R.id.cummulativeInterest)
     }
 
     fun bind(output: ScheduleOutput,
         pos: Int,
         listener: (Int) -> Unit)  {
-        mYearView?.text = output.year
+        mYearView?.text = output.quotas
         mInterestView?.text = output.interest
         mPrincipalView?.text = output.principal
         mSomethingView?.text = output.something

@@ -1,9 +1,8 @@
-package com.example.mortgagecalculator.ui.main
+package com.example.mortgagecalculator.ui.main.views
 
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,13 +14,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.mortgagecalculator.R
 import com.example.mortgagecalculator.model.ScheduleOutput
+import com.example.mortgagecalculator.ui.main.viewmodels.MainViewModel
 import kotlinx.android.synthetic.main.main_fragment.*
 import kotlinx.android.synthetic.main.schedule_fragment.*
 import java.text.DecimalFormat
 import kotlin.math.pow
 
 
-@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class MainFragment : Fragment()  {
 
 
@@ -39,9 +38,9 @@ class MainFragment : Fragment()  {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         viewModel = activity?.run { ViewModelProvider(this).get(MainViewModel::class.java)
         } ?: throw Exception("invalid Activity")
+
 
 
         var initialLoanAmount : Double
@@ -49,8 +48,11 @@ class MainFragment : Fragment()  {
         var interest : Double
         var downPayment : Double
 
+        val fullDecimalFormat = DecimalFormat("#,###.######")
 
-        //getting data class variables from ViewModel state.
+
+
+        //getting data class variables from ViewModel state, and formatting once ran once
         initialLoanAmount = viewModel.state.value!!.loanAmount
         val loanInput: String = initialLoanAmount.toString()
         mortgageLoan.setText(loanInput)
@@ -62,55 +64,38 @@ class MainFragment : Fragment()  {
         mortgageInterest.setText(interestInput)
 
         downPayment = viewModel.state.value!!.downAmount
-        val wtf = downPayment
-        val downInput: String = String.format("%,d", wtf.toInt())
-        mortgageDown.setText(downInput)
+        val totalPaid = downPayment
+        mortgageDown.setText( fullDecimalFormat.format(totalPaid))
 
 
-        button.setOnClickListener {
-            downPayment = viewModel.state.value!!.downAmount
-            val motherbitch = downPayment
-            mortgageDown.setText(String.format("%,.2f", motherbitch))
-        }
-
-
-
-        fun quickMaths(): Double {
+        fun monthlyPayment(): Double {
             val i = interest.div(100 * 12)
-
             val calExponent = (i.plus(1).let {
                 years.times(12).let { it1 ->
                     it.pow(it1)
                 }
             })
-            return ((calExponent.let { i.times(it) }).div(calExponent - 1)).let {
+            return ((calExponent.let { i.times(it) }).div(calExponent - 1)).let { it ->
                 (downPayment.let { initialLoanAmount.minus(it) }).times(it)
             }
         }
+        println(monthlyPayment())
 
-        fun getResults() {
-            val monthlyPayment = quickMaths()
-            val firstInterestPayment = ((interest.div(100 * 12))*(initialLoanAmount-downPayment))
-            val firstPrincipalPayment = monthlyPayment-firstInterestPayment
-            val mortgageAfterPayment = (initialLoanAmount-downPayment)-firstPrincipalPayment
-            val numberQuotas = (years*12).toInt()
-            moPayment.text = String.format("%,.2f", monthlyPayment)
-            numberofPayments.text = numberQuotas.toString()
-
+        fun getAmortization() {
             viewModel.scheduleArrayList?.clear()
             scheduleRecycler?.adapter?.notifyDataSetChanged()
 
-
-            var newInterestPayment = firstInterestPayment
-            var newPrincipal = firstPrincipalPayment
-            var newMortgage = mortgageAfterPayment
-            var paidInterest  = firstInterestPayment
-
+            val monthlyPayment = monthlyPayment()
+            val numberQuotas = (years*12).toInt()
+            var newInterestPayment = ((interest.div(100 * 12))*(initialLoanAmount-downPayment))
+            var newPrincipal = monthlyPayment-newInterestPayment
+            var newMortgage = (initialLoanAmount-downPayment)-newPrincipal
+            var paidInterest  = newInterestPayment
 
 
             for (i in 1..numberQuotas) {
-                //we have to move the scheduloutput for cleaner code
-                viewModel.scheduleArrayList?.add(ScheduleOutput((i).toString(),
+                viewModel.scheduleArrayList?.add(
+                    ScheduleOutput((i).toString(),
                     String.format("%,.2f", newMortgage),
                     String.format("%,.2f", newInterestPayment),
                     String.format("%,.2f", newPrincipal),
@@ -126,9 +111,12 @@ class MainFragment : Fragment()  {
             //need to remove "," other wise parsing will fail
             val lastInterestPosition = (viewModel.scheduleArrayList!!.last().totalInterest)
             val formattedInterest = lastInterestPosition.replace(Regex(","), "")
-            val wtf = (formattedInterest.toDouble()+ initialLoanAmount)
+            val totalPaid = (formattedInterest.toDouble()+ initialLoanAmount)
 
-            totalAmount.text = String.format("%,.2f", wtf)
+            numberofPayments.text = numberQuotas.toString()
+            moPayment.text = String.format("%,.2f", monthlyPayment)
+
+            totalAmount.text = String.format("%,.2f", totalPaid)
             totalInterest.text = lastInterestPosition
         }
 
@@ -149,7 +137,7 @@ class MainFragment : Fragment()  {
                 val s = options[position]
                 years = s.toDouble()
                 viewModel.state.value?.yearAmount = s.toDouble()
-                getResults()
+                getAmortization()
 
             }
         }
@@ -175,7 +163,7 @@ class MainFragment : Fragment()  {
                 if (s.isNotEmpty()) {
                     initialLoanAmount = s.toString().toDouble()
                     viewModel.state.value?.loanAmount = s.toString().toDouble()
-                    getResults()
+                    getAmortization()
                     //setting new var values to dataclass in ViewModel State.
 
                 }
@@ -203,7 +191,7 @@ class MainFragment : Fragment()  {
                 if (s.isNotEmpty()) {
                     interest = s.toString().toDouble()
                     viewModel.state.value?.interestAmount = s.toString().toDouble()
-                    getResults()
+                    getAmortization()
 
                 }
             }
@@ -216,137 +204,135 @@ class MainFragment : Fragment()  {
             private var normalFormat = DecimalFormat("#,###")
             private var decimalOnlyFormat = DecimalFormat(".######")
             private var hasFractionalPart: Boolean
+            private var testFractionBool: Boolean
 
-
-
-
+            private var deleteKeyPressed : Boolean
 
 
             override fun afterTextChanged(s: Editable) {
-                println("afterTextChanged text changed")
-                println("1")
+
                 val offsetPos: Int = mortgageDown.text.length
                 mortgageDown.removeTextChangedListener(this)
-                println("2")
 
 
                 val textInput = s.toString().replace(Regex("[$,]"), "")
-                println("3")
+                //hasFractionalPart = s.toString().contains(fullDecimalFormat.decimalFormatSymbols.decimalSeparator.toString())
+                hasFractionalPart = s.toString().contains(".")
 
-                hasFractionalPart = s.toString().contains(fullDecimalFormat.decimalFormatSymbols.decimalSeparator.toString())
+
+
                 val offsetSelectedPos : Int = mortgageDown.selectionStart
-                println("4")
-
-
-                when {
-                    hasFractionalPart -> {
-                        //overloaded call use null to prevent crash
-                        println("has decimal")
-                        mortgageDown.setText( fullDecimalFormat.format(textInput.toDouble()), null)
-                    }
-                    s.isNotEmpty() -> {
-                        println("no decimal")
-                        mortgageDown.setText(  normalFormat.format(textInput.toDouble()), null)
-                    }
-                    else -> {
-                        println("empty string")
-                        downPayment =  0.toDouble()
-                    }
+                //add a zero in front of "."
+                if (textInput  == ".") {
+                    mortgageDown.setText( fullDecimalFormat.format(0.toDouble()))
                 }
-                println("5")
+                //full decimal
+                else if (hasFractionalPart && !textInput[0].toString().contains(".")) {
+                    mortgageDown.setText( fullDecimalFormat.format(textInput.toDouble()))
+                    println("wtf")
+                }
+                //decimalonly format
+                else if (hasFractionalPart && (textInput[0].toString().contains("."))){
+                    mortgageDown.setText( decimalOnlyFormat.format(textInput.toDouble()))
+                    println("wtf2")
+
+                }
+                //No decimals
+                else if (s.isNotEmpty()) {
+                    mortgageDown.setText(normalFormat.format(textInput.toDouble()))
+                }
+                else {
+                    //save zero
+                    viewModel.state.value?.downAmount =  0.toDouble()
+                }
+
                 val maxPos: Int = mortgageDown.text.length
+                //offsetting by one where there is a comma.
                 val selectedPos = offsetSelectedPos + (maxPos - offsetPos)
-
-                //placing cursor at comma or decimal
-                if (selectedPos != maxPos && selectedPos > offsetSelectedPos) {
-                    println("5.2")
-
+                //offset has to be true, as well as delete soft key
+                 if (selectedPos != maxPos && selectedPos > offsetSelectedPos && deleteKeyPressed && textInput != ".") {
+                    println("first")
                     //getting string with characters included
-                    val fullInput = (normalFormat.format(textInput.toDouble()))
+                    val fullInput = (fullDecimalFormat.format(textInput.toDouble()))
+                    println(fullInput)
                     //before cursor text
                     val before = fullInput.substring(0, offsetSelectedPos)
+                    println(before)
                     //after cursor text
                     val after = fullInput.substring(offsetSelectedPos)
-                        //before cursor range minus the ending value.
+                    println(after)
+                    //before cursor range minus the ending value.
                     val newBefore = before.substring(0, before.length - 1)
+                    println(newBefore)
                     // "gluing" the text back together after getting rid of the value deleted
                     val outputNumber = newBefore + after
                     val finalNumber = outputNumber.replace(Regex("[$,]"), "")
-                    println("5.5")
-                    if (hasFractionalPart){
+
+                     if (hasFractionalPart){
                         mortgageDown.setText(fullDecimalFormat.format(finalNumber.toDouble()))}
                     else {
                         mortgageDown.setText(normalFormat.format(finalNumber.toDouble()))
                     }
-                    //cursors after delete may have make to customs.
-                    mortgageDown.setSelection(selectedPos-1)
-                    println("first")
+                     val newFormatLength = mortgageDown.text.length
+
+                     //when splicing and getting rid of a comma, we need to offset by 2
+                     if (newFormatLength == maxPos -2 && selectedPos != 0) {
+                         mortgageDown.setSelection(selectedPos - 2)
+                     }
+                     else {
+                         mortgageDown.setSelection(selectedPos - 1)
+                     }
+                     deleteKeyPressed = false
                 }
-                //placing cursor at end of numbers
+                //placing cursor on initial selected position
                 else if (selectedPos in 1..maxPos) {
                     mortgageDown.setSelection(selectedPos)
-                    println("second")
-
-                } else {
-                 // placing cursor at next available number that is not zero.
+                     println("tehe")
+                }
+                //placing cursor at zero when empty
+                else {
                     mortgageDown.setSelection(offsetSelectedPos)
-                    println("third")
+                     println("tehe")
 
                 }
-                //getResults()
-
                 mortgageDown.addTextChangedListener(this)
-
+                getAmortization()
             }
 
             override fun beforeTextChanged(
                 s: CharSequence, start: Int, count: Int, after: Int
             ) {
-                println("before text changed")
+                if (after < count) {
+                    deleteKeyPressed = true
+                }
             }
+
             override fun onTextChanged(
                 s: CharSequence, start: Int, before: Int, count: Int
             ) {
-
-                println("onTextChanged text changed")
-                if (s.isNotEmpty()) {
-                    val textInput = s.toString().replace(Regex("[$,.]"), "")
-                    if (textInput.isNotEmpty()){
+                if (s.isNotEmpty() && s.toString() != ".") {
+                    val textInput = s.toString().replace(Regex("[,]"), "")
                     downPayment = textInput.toDouble()
                     viewModel.state.value?.downAmount = textInput.toDouble()
-                    }
                 }
-
+                else
+                {
+                    downPayment = 0.toDouble()
+                }
             }
 
             init {
                 println("Init")
                 fullDecimalFormat.isDecimalSeparatorAlwaysShown = true
                 hasFractionalPart = false
+                testFractionBool = false
+                deleteKeyPressed = false
+
             }
-
-
 
         })
 
-
-
     }
-
-}
-
-/*fun afterTextChanged(s: Editable) {
-    mortgageStart.removeTextChangedListener(this)
-
-    MortgageStart.addTextChangedListener(this)
-}
-
-*/
-
-
+ }
 
 /*viewModel.scheduleLiveData.observe(viewLifecycleOwner, Observer {})*/
-
-
-
-

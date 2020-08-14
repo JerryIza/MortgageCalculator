@@ -1,17 +1,16 @@
-package com.example.mortgagecalculator.ui.main
+package com.example.mortgagecalculator.ui.main.views
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mortgagecalculator.R
-import com.example.mortgagecalculator.adapters.OutputViewHolder
-import com.example.mortgagecalculator.adapters.ScheduleAdapter
-import com.example.mortgagecalculator.model.ScheduleOutput
+import com.example.mortgagecalculator.ui.main.viewmodels.MainViewModel
+import com.example.mortgagecalculator.ui.main.adapters.ScheduleAdapter
 import kotlinx.android.synthetic.main.schedule_fragment.*
 
 
@@ -36,15 +35,17 @@ class ScheduleFragment : Fragment() {
         val scheduleList = viewModel.scheduleArrayList
 
         scheduleRecycler.apply {
+            println("recyclerview")
             layoutManager = LinearLayoutManager(activity)
             adapter = ScheduleAdapter(scheduleList!!){
-                Toast.makeText(context, scheduleList.get(it).totalInterest, Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.detailFragment)
+                viewModel.state.value?.recyclerPosition = it
+                          //viewModel.state.value?.recyclerPosition = scheduleList[it].totalInterest.toInt()
 
             }
         }
-        //get last value
-        /*textView7.text = scheduleList!!.get(359).totalInterest.toString()
-        viewModel.scheduleArrayList!!.get(359).totalInterest*/
+/*viewModel.scheduleLiveData.observe(viewLifecycleOwner, Observer {})*/
+
     }
 
 }

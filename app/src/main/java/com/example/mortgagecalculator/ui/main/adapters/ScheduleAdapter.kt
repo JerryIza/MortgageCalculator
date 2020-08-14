@@ -1,4 +1,4 @@
-package com.example.mortgagecalculator.adapters
+package com.example.mortgagecalculator.ui.main.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mortgagecalculator.R
-import com.example.mortgagecalculator.model.ScheduleOutput
+import com.example.mortgagecalculator.model.AmortizationResults
 
 class OutputViewHolder (inflater: LayoutInflater, parent: ViewGroup) :
         RecyclerView.ViewHolder(inflater.inflate(R.layout.schedule_list, parent, false)) {
@@ -23,13 +23,13 @@ class OutputViewHolder (inflater: LayoutInflater, parent: ViewGroup) :
         mSomethingView = itemView.findViewById(R.id.testYeet)
     }
 
-    fun bind(output: ScheduleOutput,
-        pos: Int,
-        listener: (Int) -> Unit)  {
+    fun bind(output: AmortizationResults,
+             pos: Int,
+             listener: (Int) -> Unit)  {
         mYearView?.text = output.quotas
         mInterestView?.text = output.interest
         mPrincipalView?.text = output.principal
-        mSomethingView?.text = output.something
+        mSomethingView?.text = output.loanLeft
         mPaidInterest?.text = output.totalInterest
 
             itemView.setOnClickListener {

@@ -2,6 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
+
 
 android {
     compileSdkVersion 29
@@ -53,6 +55,11 @@ dependencies {
     implementation "androidx.navigation:navigation-ui:$rootProject.nav_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.0-alpha06"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    //daggerHilt
+    implementation "com.google.dagger:hilt-android:2.28-alpha"
+    kapt "com.google.dagger:hilt-android-compiler:2.28-alpha"
+
 
 
     //Testing Implementation

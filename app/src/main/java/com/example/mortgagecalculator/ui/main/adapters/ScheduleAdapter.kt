@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mortgagecalculator.model.AmortizationResults
-import com.example.mortgagecalculator.model.TestDataClass
 import java.util.*
 import kotlin.collections.ArrayList
 

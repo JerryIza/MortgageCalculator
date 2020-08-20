@@ -5,18 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mortgagecalculator.R
 import com.example.mortgagecalculator.databinding.ScheduleFragmentBinding
-import com.example.mortgagecalculator.model.AmortizationCalculator
 import com.example.mortgagecalculator.ui.main.adapters.ScheduleAdapter
 import com.example.mortgagecalculator.ui.main.viewmodels.AmortizationViewModel
 import kotlinx.android.synthetic.main.schedule_fragment.*
 
 class ScheduleFragment : Fragment() {
+
+    private lateinit var binding: ScheduleFragmentBinding
+
 
     private lateinit var viewModel: AmortizationViewModel
 
@@ -25,7 +26,7 @@ class ScheduleFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = ScheduleFragmentBinding.inflate(inflater, container, false)
+        binding = ScheduleFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -37,32 +38,15 @@ class ScheduleFragment : Fragment() {
 
         val scheduleList = viewModel.scheduleArrayList
 
-
-
         scheduleRecycler.apply {
-            println("recyclerview")
             layoutManager = LinearLayoutManager(activity)
-            //adapter = ScheduleAdapter(scheduleList!!) {
             adapter = ScheduleAdapter(scheduleList!!) {
                 findNavController().navigate(R.id.detailFragment)
+                //it:int equals get position clicked. we are saving position in state and pulling position in detail fragment again
                 viewModel.state.value?.recyclerPosition = it
-
-
             }
         }
-
-
-        btn.setOnClickListener {
-           viewModel.calculateTest(AmortizationCalculator())
-            scheduleRecycler?.adapter?.notifyDataSetChanged()
-
-        }
-
-
-
-
     }
-
 }
 
 

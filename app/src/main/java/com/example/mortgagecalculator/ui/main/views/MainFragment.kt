@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.mortgagecalculator.databinding.MainFragmentBinding
 import com.example.mortgagecalculator.model.AmortizationCalculator
 import com.example.mortgagecalculator.model.AmortizationResults
+import com.example.mortgagecalculator.model.ExtraPayments
 import com.example.mortgagecalculator.ui.main.viewmodels.AmortizationViewModel
 import kotlinx.android.synthetic.main.main_fragment.*
 import kotlinx.android.synthetic.main.schedule_fragment.*
@@ -23,8 +24,6 @@ import java.text.DecimalFormat
 
 
 class MainFragment : Fragment() {
-
-
 
     private lateinit var binding: MainFragmentBinding
 
@@ -47,8 +46,6 @@ class MainFragment : Fragment() {
         viewModel = activity?.run {
             ViewModelProvider(this).get(AmortizationViewModel::class.java)
         } ?: throw Exception("invalid Activity")
-        println("1")
-
 
 
         var initialLoanAmount: Double
@@ -57,8 +54,6 @@ class MainFragment : Fragment() {
         var downPayment: Double
 
         val fullDecimalFormat = DecimalFormat("#,###.######")
-
-
 
 
         //getting data class variables from ViewModel state, and formatting once ran once
@@ -85,7 +80,7 @@ class MainFragment : Fragment() {
         option.adapter =
             context?.let { ArrayAdapter<String>(it, android.R.layout.simple_spinner_item, options) }
 
-        option.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        binding.yearSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 result.text = "Select an option "
             }
@@ -106,14 +101,12 @@ class MainFragment : Fragment() {
 
         mortgageLoan.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
-
             }
 
             override fun beforeTextChanged(
                 s: CharSequence, start: Int,
                 count: Int, after: Int
             ) {
-
             }
 
             override fun onTextChanged(
@@ -130,7 +123,6 @@ class MainFragment : Fragment() {
         })
 
         mortgageInterest.addTextChangedListener(object : TextWatcher {
-
             override fun afterTextChanged(s: Editable) {
             }
 
@@ -138,7 +130,6 @@ class MainFragment : Fragment() {
                 s: CharSequence, start: Int,
                 count: Int, after: Int
             ) {
-
             }
 
             override fun onTextChanged(
@@ -154,41 +145,37 @@ class MainFragment : Fragment() {
         })
 
         mortgageDown.addTextChangedListener(object : TextWatcher {
-
-
             override fun afterTextChanged(s: Editable) {
             }
 
             override fun beforeTextChanged(
                 s: CharSequence, start: Int, count: Int, after: Int
             ) {
-
             }
 
             override fun onTextChanged(
                 s: CharSequence, start: Int, before: Int, count: Int
             ) {
-                downPayment = s.toString().toDouble()
-                viewModel.state.value?.downAmount = s.toString().toDouble()
-                getResults()
+                if (s.isNotEmpty()) {
+                    downPayment = s.toString().toDouble()
+                    viewModel.state.value?.downAmount = s.toString().toDouble()
+                    getResults()
+                }
             }
         })
-        println("2")
-
-
-
-        setupObservers()
-
     }
+
     fun getResults() {
+
         viewModel.calculateTest(AmortizationCalculator())
         scheduleRecycler?.adapter?.notifyDataSetChanged()
+        println("GetResults")
+        setupObservers()
     }
 
     //setupObservers
     private fun setupObservers() {
-        println("3")
-        getResults()
+        println("observer called")
         viewModel.scheduleLiveData.observe(viewLifecycleOwner, Observer {
             bindResults(it!!.last())
         })
@@ -198,10 +185,9 @@ class MainFragment : Fragment() {
     private fun bindResults(amortizationResults: AmortizationResults) {
         binding.totalInterest.text = amortizationResults.totalInterest
         binding.totalAmount.text = amortizationResults.totalAmount
-        println("this right here maine: "+ amortizationResults.totalAmount)
-        println("this right here maine: "+ amortizationResults.totalInterest)
         binding.numberofPayments.text = amortizationResults.quotas
-        binding.moPayment.text = amortizationResults.loanLeft
+        binding.moPayment.text = amortizationResults.monthlyPayment
+        binding.deleteView.text = viewModel.extraPaymentsLiveData.toString()
 
     }
 }

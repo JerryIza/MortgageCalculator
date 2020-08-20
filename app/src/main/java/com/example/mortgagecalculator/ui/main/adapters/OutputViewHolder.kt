@@ -12,7 +12,8 @@ class OutputViewHolder (inflater: LayoutInflater, parent: ViewGroup) :
     private var mYearView: TextView? = null
     private var mInterestView: TextView? = null
     private var mPrincipalView: TextView? = null
-    private var mSomethingView: TextView? = null
+    private var mLoanView: TextView? = null
+    private var mExtraPayment: TextView? = null
     private var mPaidInterest: TextView? = null
 
 
@@ -20,7 +21,8 @@ class OutputViewHolder (inflater: LayoutInflater, parent: ViewGroup) :
         mYearView = itemView.findViewById(R.id.testYear)
         mInterestView = itemView.findViewById(R.id.testInterest)
         mPrincipalView = itemView.findViewById(R.id.testPrincipal)
-        mSomethingView = itemView.findViewById(R.id.testYeet)
+        mLoanView = itemView.findViewById(R.id.testLoan)
+        mExtraPayment = itemView.findViewById(R.id.extraPayment)
     }
 
     fun bind(output: AmortizationResults,
@@ -29,7 +31,8 @@ class OutputViewHolder (inflater: LayoutInflater, parent: ViewGroup) :
         mYearView?.text = output.quotas
         mInterestView?.text = output.interest
         mPrincipalView?.text = output.principal
-        mSomethingView?.text = output.loanLeft
+        mLoanView?.text = output.loanLeft
+        mExtraPayment?.text = output.additionalPayment
         mPaidInterest?.text = output.totalInterest
 
             itemView.setOnClickListener {

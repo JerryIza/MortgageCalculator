@@ -6,73 +6,66 @@ import androidx.lifecycle.ViewModel
 import com.example.mortgagecalculator.model.AmortizationCalculator
 import com.example.mortgagecalculator.model.AmortizationResults
 import com.example.mortgagecalculator.model.AppState
+import com.example.mortgagecalculator.model.ExtraPayments
 
 @Suppress("NAME_SHADOWING")
 class AmortizationViewModel : ViewModel() {
 
     private val _state = MutableLiveData<AppState>()
+
     val state: LiveData<AppState> get() = _state
 
-    init {
-        _state.value = AppState()
-    }
-    //_state.value = _state.value!!.copy(checking = true)
+    val extraPaymentsMap = mutableMapOf<String, Int>()
+
+    val extraPaymentsLiveData: MutableMap<String, Int> get() = extraPaymentsMap
+
+    //private?
+    var scheduleArrayList: ArrayList<AmortizationResults>? = null
 
     val scheduleLiveData: MutableLiveData<ArrayList<AmortizationResults>?> = MutableLiveData()
 
-    var scheduleArrayList: ArrayList<AmortizationResults>? = null
-
 
     fun calculateTest(amortizationCalculator: AmortizationCalculator) {
-        println("4")
 
-        println("Array list OLD: "+ scheduleArrayList)
-
+        scheduleArrayList?.clear()
 
         val calculatorResults = (amortizationCalculator.getAmortization(
             state.value!!.loanAmount,
             state.value!!.yearAmount,
             state.value!!.interestAmount,
-            state.value!!.downAmount
-        ))
-        this.scheduleArrayList?.clear()
-        for (i in 0 until (state.value!!.yearAmount * 12)) {
+            state.value!!.downAmount,
+            extraPaymentsLiveData
+            ))
+        println(scheduleArrayList)
+        for (i in 0 until (calculatorResults!!.last().quotas.toInt())) {
             scheduleArrayList?.add(
                 AmortizationResults(
-                    calculatorResults!![i].quotas,
+                    calculatorResults[i].quotas,
                     calculatorResults[i].loanLeft,
                     calculatorResults[i].interest,
                     calculatorResults[i].principal,
-                    calculatorResults[i].totalInterest
+                    calculatorResults[i].totalInterest,
+                   additionalPayment =  calculatorResults[i].additionalPayment
                 )
             )
-            scheduleArrayList?.get(0)!!.totalInterest
-            //println("5")
-
-
         }
-        println("Array list results NEW: "+ scheduleArrayList)
+        scheduleArrayList?.last()?.totalAmount = calculatorResults[0].totalAmount
+        scheduleArrayList?.last()?.monthlyPayment = calculatorResults[0].monthlyPayment
     }
 
     private fun getListDetails() {
-        populateList()
+        populateScheduleList()
+        //starting text views
         scheduleLiveData.value = scheduleArrayList
     }
 
-    private fun populateList() {
-
+    private fun populateScheduleList() {
         scheduleArrayList = ArrayList()
-        scheduleArrayList?.add(
-            AmortizationResults(
-                "", "", "", "", ""
-            )
-        )
     }
 
     init {
-        println("6")
-
         getListDetails()
+        _state.value = AppState()
     }
 
 }

@@ -1,15 +1,17 @@
 package com.example.mortgagecalculator.db
 
+import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 
+@Dao
 interface InputsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertInputs(inputs:Inputs)
+     fun insertInputs(inputs:Inputs)
 
     @Delete
-    suspend fun deleteInputs(inputs: Inputs)
+     fun deleteInputs(inputs: Inputs)
 
 }

@@ -14,15 +14,4 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(ActivityComponent::class)
-object AppModule {
-
-   @Singleton
-   @Provides
-   fun provideInputsDatabase(@ApplicationContext app: Context) = Room.databaseBuilder(
-       app,
-       InputsDatabase::class.java,
-       //object Constant?
-        "inputs_table"
-   ).build()
-
-}
+object AppModule

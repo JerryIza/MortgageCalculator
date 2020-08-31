@@ -45,7 +45,7 @@ class DetailFragment : Fragment() {
         binding.calMonth.text = positionDetails?.monthId.toString()
         binding.monthlyInterest.text = positionDetails?.interest + "/" + viewModel.scheduleArrayList?.last()!!.monthlyPayment
         binding.totalInterest.text = positionDetails?.totalInterest + "/" + viewModel.scheduleArrayList?.last()!!.totalInterest
-        binding.principal.text = positionDetails?.principal + "/" + viewModel.scheduleArrayList?.last()!!.principal
+        binding.principal.text = positionDetails?.principal + "/" + viewModel.scheduleArrayList?.last()!!.monthlyPayment
         binding.loanLeft.text = positionDetails?.loanLeft.toString() + "/" + viewModel.state.value!!.loanAmount.toString()
 
 

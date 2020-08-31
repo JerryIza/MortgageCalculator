@@ -6,9 +6,9 @@
     app:startDestination="@id/mainFragment">
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.example.mortgagecalculator.ui.main.views.MainFragment"
+        android:name="com.example.mortgagecalculator.ui.main.views.InputFragment"
         android:label="MainFragment"
-        tools:layout="@layout/main_fragment"
+        tools:layout="@layout/input_fragment"
         >
         <action
             android:id="@+id/action_mainFragment_to_scheduleFragment3"
@@ -30,5 +30,13 @@
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.example.mortgagecalculator.ui.main.views.DetailFragment"
-        android:label="DetailFragment" />
+        android:label="DetailFragment" >
+        <action
+            android:id="@+id/action_detailFragment_to_scheduleFragment"
+            app:destination="@id/scheduleFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/saveFragment"
+        android:name="com.example.mortgagecalculator.ui.main.views.SaveFragment"
+        android:label="SaveFragment" />
 </navigation>

@@ -1,16 +1,16 @@
 package com.example.mortgagecalculator.ui.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.mortgagecalculator.R
 import com.example.mortgagecalculator.databinding.MainActivityBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.main_activity.*
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,22 +18,16 @@ class MainActivity : AppCompatActivity() {
         val binding = MainActivityBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
-
-        val navView: BottomNavigationView = findViewById(R.id.bottomNavigationView)
-
-        val navController = findNavController(R.id.nav_host_fragment)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(setOf(
-            R.id.mainFragment,
-            R.id.scheduleFragment
-        ))
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+        binding.bottomNavigationView.setupWithNavController(findNavController(R.id.navHostFragment))
 
 
-
-
+        findNavController(R.id.navHostFragment).addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.mainFragment, R.id.scheduleFragment, R.id.saveFragment ->
+                    bottomNavigationView.visibility = View.VISIBLE
+                else -> bottomNavigationView.visibility = View.GONE
+            }
+        }
     }
 }
 

@@ -25,12 +25,7 @@ class ScheduleAdapter(private val list: List<AmortizationResults>, private val l
     override fun onBindViewHolder(holder: OutputViewHolder, position: Int) =
         holder.bind(list[position], position, listener)
 
-    //this right here
-    fun setResults(outputList: List<AmortizationResults>) {
-        this.outputList.clear()
-        this.outputList.addAll(outputList)
-        notifyDataSetChanged()
-    }
+
 
 
 }

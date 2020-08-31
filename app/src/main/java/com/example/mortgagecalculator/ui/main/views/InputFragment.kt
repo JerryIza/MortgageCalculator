@@ -1,5 +1,7 @@
 package com.example.mortgagecalculator.ui.main.views
 
+import android.app.DatePickerDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,19 +15,23 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.mortgagecalculator.databinding.MainFragmentBinding
+import com.example.mortgagecalculator.databinding.InputFragmentBinding
 import com.example.mortgagecalculator.model.AmortizationCalculator
 import com.example.mortgagecalculator.model.AmortizationResults
-import com.example.mortgagecalculator.model.ExtraPayments
 import com.example.mortgagecalculator.ui.main.viewmodels.AmortizationViewModel
-import kotlinx.android.synthetic.main.main_fragment.*
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
+import kotlinx.android.synthetic.main.input_fragment.*
 import kotlinx.android.synthetic.main.schedule_fragment.*
 import java.text.DecimalFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
-class MainFragment : Fragment() {
+class InputFragment : Fragment() {
 
-    private lateinit var binding: MainFragmentBinding
+    private lateinit var binding: InputFragmentBinding
 
     private lateinit var viewModel: AmortizationViewModel
 
@@ -37,7 +43,7 @@ class MainFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = MainFragmentBinding.inflate(inflater, container, false)
+        binding = InputFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -72,6 +78,34 @@ class MainFragment : Fragment() {
         mortgageDown.setText(fullDecimalFormat.format(totalPaid))
 
 
+        val textDate = binding.startBtn
+
+
+
+        textDate.setOnClickListener {
+            val cal = Calendar.getInstance()
+            val month = cal.get(Calendar.MONTH)
+            val day = cal.get(Calendar.DAY_OF_MONTH)
+            val year = cal.get(Calendar.YEAR)
+            val datePickerDialog = DatePickerDialog(
+                requireContext(),
+                { _, mYear, mMonth, mDay ->
+                    textDate.text = "" + (mMonth + 1) + "/" + mDay + "/" + mYear
+                    //both are instances not raw ints
+                    viewModel.state.value?.dateSimpleFormat =
+                        "" + (mMonth + 1) + "/" + mDay + "/" + mYear
+                },
+                //where dialogstarts maybe do an if, so we don't forge
+                year,
+                month,
+                day
+            )
+            datePickerDialog.show()
+            datePickerDialog.setOnDismissListener {
+                getResults()
+            }
+        }
+
         option = yearSpinner
         result = spinnerresults
 
@@ -96,6 +130,7 @@ class MainFragment : Fragment() {
                 years = s.toInt()
                 viewModel.state.value?.yearAmount = s.toInt()
                 getResults()
+                setUpPieChart()
             }
         }
 
@@ -118,6 +153,7 @@ class MainFragment : Fragment() {
                     viewModel.state.value?.loanAmount = s.toString().toDouble()
                     //setting new var values to dataclass in ViewModel State.
                     getResults()
+                    setUpPieChart()
                 }
             }
         })
@@ -140,6 +176,7 @@ class MainFragment : Fragment() {
                     interest = s.toString().toDouble()
                     viewModel.state.value?.interestAmount = s.toString().toDouble()
                     getResults()
+                    setUpPieChart()
                 }
             }
         })
@@ -160,17 +197,22 @@ class MainFragment : Fragment() {
                     downPayment = s.toString().toDouble()
                     viewModel.state.value?.downAmount = s.toString().toDouble()
                     getResults()
+                    setUpPieChart()
                 }
             }
         })
+
     }
 
     fun getResults() {
-
-        viewModel.calculateTest(AmortizationCalculator())
+        println("get results executed")
+        viewModel.Calculate(AmortizationCalculator())
         scheduleRecycler?.adapter?.notifyDataSetChanged()
         println("GetResults")
         setupObservers()
+        setUpPieChart()
+
+
     }
 
     //setupObservers
@@ -183,13 +225,59 @@ class MainFragment : Fragment() {
     }
 
     private fun bindResults(amortizationResults: AmortizationResults) {
+        println("bindresultsExecute")
         binding.totalInterest.text = amortizationResults.totalInterest
-        binding.totalAmount.text = amortizationResults.totalAmount
-        binding.numberofPayments.text = amortizationResults.quotas
-        binding.moPayment.text = amortizationResults.monthlyPayment
-        binding.deleteView.text = viewModel.extraPaymentsLiveData.toString()
+        binding.monthlyPayment.text = amortizationResults.monthlyPayment
+        binding.payOffDate.text = amortizationResults.monthId
+        binding.totalAmount.text = String.format("%,.2f", amortizationResults.totalAmount)
+        binding.numberofPayments.text = viewModel.scheduleArrayList!!.size.toString()
+
+        setUpPieChart()
+    }
+
+
+    fun setUpPieChart() {
+        val chart = binding.pieChart
+
+        //move to own function
+        chart.setUsePercentValues(true)
+        chart.isRotationEnabled = false
+        chart.setTouchEnabled(false)
+        chart.description.isEnabled
+        chart.setExtraOffsets(0f, 5f, 0f, -10f)
+
+        val transparentColor = Color.parseColor("#434343")
+        chart.isDrawHoleEnabled
+        chart.setHoleColor(Color.WHITE)
+        chart.holeRadius = 60f
+        chart.transparentCircleRadius = 65f
+        chart.setTransparentCircleColor(transparentColor)
+        chart.setTransparentCircleAlpha(9000)
+
+        val yValue = ArrayList<PieEntry>()
+
+        yValue.add(PieEntry(viewModel.graphProgressPink().toFloat(), "Interest"))
+        yValue.add(PieEntry(viewModel.graphProgressBlue().toFloat(), "Principal"))
+
+        val blueColor = Color.parseColor("#61CFF8")
+        val pinkColor = Color.parseColor("#FE657A")
+
+        val dataSet = PieDataSet(yValue, "")
+
+        dataSet.colors = mutableListOf<Int>(pinkColor, blueColor)
+
+        val pieData = PieData(dataSet)
+        pieData.setValueTextSize(10f)
+        pieData.setValueTextColor(Color.YELLOW)
+
+        chart.data = pieData // set data and notifyDataSetChange
+        chart.invalidate() // refresh chart
+
 
     }
+
+
 }
+
 
 /*viewModel.scheduleLiveData.observe(viewLifecycleOwner, Observer {})*/

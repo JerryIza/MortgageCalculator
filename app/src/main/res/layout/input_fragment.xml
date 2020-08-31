@@ -2,17 +2,45 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#FFFFFF"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
 
+
+    <TextView
+        android:id="@+id/monthlyPayment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:text="TextView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:translationZ="1sp"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="500" />
+
+    <TextView
+        android:id="@+id/paymentTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:text="Payment"
+
+        android:translationZ="1sp"
+        app:layout_constraintEnd_toEndOf="@+id/monthlyPayment"
+        app:layout_constraintStart_toStartOf="@+id/monthlyPayment"
+        app:layout_constraintTop_toBottomOf="@+id/monthlyPayment" />
 
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="240dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
@@ -20,28 +48,40 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="900dp"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/deleteView"
+
+            <View
+                android:id="@+id/firstDivider"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:text="TextView"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <View
-                android:id="@+id/mainDivider"
+            <TextView
+                android:id="@+id/payOffDate"
                 android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:layout_marginTop="235dp"
-                android:background="?android:attr/listDivider"
+                android:layout_height="0dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="16dp"
+                android:text="TextView"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/secondDivider" />
+
+            <TextView
+                android:id="@+id/endDateView"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:text="Pay-off Date"
+                android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@+id/payOffDate" />
 
             <View
                 android:id="@+id/secondDivider"
@@ -50,8 +90,9 @@
                 android:layout_marginTop="4dp"
                 android:background="?android:attr/listDivider"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/moPayment" />
+                app:layout_constraintTop_toBottomOf="@+id/numberofPayments" />
 
             <View
                 android:id="@+id/thirdDivider"
@@ -61,7 +102,7 @@
                 android:background="?android:attr/listDivider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/numberofPayments" />
+                app:layout_constraintTop_toBottomOf="@+id/payOffDate" />
 
             <View
                 android:id="@+id/fourthDivider"
@@ -85,19 +126,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/totalAmount" />
 
             <TextView
-                android:id="@+id/moPayment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="16dp"
-                android:text="TextView"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mainDivider"
-                tools:layout_conversion_absoluteHeight="24dp"
-                tools:layout_conversion_absoluteWidth="73dp" />
-
-            <TextView
                 android:id="@+id/numberofPayments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -106,7 +134,7 @@
                 android:text="TextView"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/secondDivider"
+                app:layout_constraintTop_toBottomOf="@+id/firstDivider"
                 tools:layout_conversion_absoluteHeight="24dp"
                 tools:layout_conversion_absoluteWidth="73dp" />
 
@@ -135,16 +163,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/fourthDivider"
                 tools:layout_conversion_absoluteHeight="24dp"
                 tools:layout_conversion_absoluteWidth="73dp" />
-
-            <TextView
-                android:id="@+id/textView10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="Mo Payment"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/moPayment" />
 
             <TextView
                 android:id="@+id/textView11"
@@ -197,11 +215,12 @@
                 android:drawablePadding="12dp"
                 android:ems="10"
                 android:hint="@string/loan"
+                android:imeOptions="actionDone"
                 android:inputType="number"
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp"
                 android:textAlignment="center"
-                android:textSize="32dp"
+                android:textSize="32sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView2" />
@@ -235,15 +254,15 @@
                 android:layout_height="0dp"
                 android:background="@drawable/styled_box"
                 android:drawablePadding="12dp"
-
                 android:ems="10"
                 android:fontFamily="@font/armata"
                 android:hint="Interest %"
+                android:imeOptions="actionDone"
                 android:inputType="numberDecimal"
-                android:paddingBottom="6dp"
+                android:paddingBottom="8dp"
                 android:textAlignment="center"
                 android:textColor="#BF000000"
-                android:textSize="32dp"
+                android:textSize="32sp"
                 android:textStyle="normal"
                 app:layout_constraintBottom_toBottomOf="@+id/divider4"
                 app:layout_constraintEnd_toStartOf="@+id/divider4"
@@ -297,17 +316,17 @@
                 android:id="@+id/mortgageDown"
                 style="@style/InputNumber"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:background="@drawable/styled_box"
-                android:drawablePadding="12dp"
                 android:ems="10"
-                android:hint="Down Payment"
+                android:hint="Down"
+                android:imeOptions="actionDone"
                 android:inputType="numberDecimal"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
+                android:paddingBottom="8dp"
                 android:textAlignment="center"
-                android:textSize="32dp"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:textSize="32sp"
+                app:layout_constraintBottom_toTopOf="@+id/divider6"
+                app:layout_constraintEnd_toStartOf="@+id/divider5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/downPaymentView" />
 
@@ -328,6 +347,7 @@
                 style="@style/InputNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingTop="8dp"
                 android:text="TextView"
                 app:layout_constraintBottom_toBottomOf="@+id/yearSpinner"
                 app:layout_constraintEnd_toEndOf="@+id/yearSpinner"
@@ -335,7 +355,69 @@
                 app:layout_constraintTop_toTopOf="@+id/yearSpinner"
                 app:layout_constraintVertical_bias="0.6" />
 
+            <TextView
+                android:id="@+id/startView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Start Date"
+                app:layout_constraintBottom_toBottomOf="@+id/downPaymentView"
+                app:layout_constraintStart_toEndOf="@+id/divider5"
+                app:layout_constraintTop_toTopOf="@+id/downPaymentView" />
+
+            <Button
+                android:id="@+id/startBtn"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/white_shape"
+                android:drawablePadding="0dp"
+                android:fontFamily="@font/armata"
+                android:paddingBottom="10dp"
+                android:text="Today"
+                android:textAllCaps="false"
+                android:textColor="#BF000000"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toTopOf="@+id/divider6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.521"
+                app:layout_constraintStart_toEndOf="@+id/divider5"
+                app:layout_constraintTop_toBottomOf="@+id/startView2"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <View
+                android:id="@+id/divider5"
+                android:layout_width="1dp"
+                android:layout_height="0dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintBottom_toTopOf="@+id/divider6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider2" />
+
+            <View
+                android:id="@+id/divider6"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_marginTop="90dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider2" />
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
+    <com.github.mikephil.charting.charts.PieChart
+
+        android:id="@+id/pieChart"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

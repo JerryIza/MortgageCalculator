@@ -41,8 +41,9 @@ class ScheduleFragment : Fragment() {
         scheduleRecycler.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = ScheduleAdapter(scheduleList!!) {
-                findNavController().navigate(R.id.detailFragment)
-                //it:int equals get position clicked. we are saving position in state and pulling position in detail fragment again
+
+                findNavController().navigate(R.id.action_scheduleFragment_to_detailFragment)
+                //int equals get position clicked. we are saving position in state and pulling position in detail fragment again
                 viewModel.state.value?.recyclerPosition = it
             }
         }

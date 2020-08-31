@@ -28,7 +28,7 @@ class OutputViewHolder (inflater: LayoutInflater, parent: ViewGroup) :
     fun bind(output: AmortizationResults,
              pos: Int,
              listener: (Int) -> Unit)  {
-        mYearView?.text = output.quotas
+        mYearView?.text = output.monthId
         mInterestView?.text = output.interest
         mPrincipalView?.text = output.principal
         mLoanView?.text = output.loanLeft

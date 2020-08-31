@@ -10,6 +10,7 @@
     <string name="principal">Principal</string>
     <string name="interest">Interest</string>
     <string name="no">No.</string>
+    <string name="start_date">Start Date:</string>
 
     <string-array name="years">
         <item>15</item>

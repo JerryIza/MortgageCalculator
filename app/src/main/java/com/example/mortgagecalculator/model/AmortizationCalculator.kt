@@ -70,8 +70,6 @@ class AmortizationCalculator {
             paidInterest += newInterestPayment
             //when loan is paid off and becomes negative, run the last calculated results from above and set loan to zero.
             if (newLoan < 1) {
-
-
                 newPrincipal += newLoan
                 scheduleArrayList?.add(
                     AmortizationResults(
@@ -85,12 +83,12 @@ class AmortizationCalculator {
                 break
             }
         }
+        println(scheduleArrayList)
         //need to remove "," other wise parsing will fail
         val formattedInterest = scheduleArrayList!!.last().totalInterest.replace(Regex(","), "")
         scheduleArrayList[0].totalAmount = (formattedInterest.toDouble() + initialLoanAmount)
         scheduleArrayList[0].monthlyPayment = String.format("%,.2f", moPayment)
 
-        println(scheduleArrayList)
         return scheduleArrayList
     }
 

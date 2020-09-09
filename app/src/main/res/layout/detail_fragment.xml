@@ -19,7 +19,7 @@
         android:id="@+id/scrollView3"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="248dp"
+        android:layout_marginTop="270dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/armata"
-                android:text="Monthly Interest"
+                android:text="Month's Interest"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -49,8 +49,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
                 android:text="259.60/536.82"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/titleMoInterest"
+                app:layout_constraintStart_toStartOf="@+id/titleMoInterest"
                 app:layout_constraintTop_toBottomOf="@+id/titleMoInterest" />
 
             <ProgressBar
@@ -75,9 +75,9 @@
                 android:fontFamily="@font/armata"
                 android:text="Interest to Date"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/titleMoPrincipal"
                 app:layout_constraintHorizontal_bias="0.524"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/titleMoPrincipal"
                 app:layout_constraintTop_toBottomOf="@+id/moPrincipalBar" />
 
             <TextView
@@ -98,14 +98,12 @@
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="0dp"
                 android:layout_height="2dp"
-                android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="32dp"
                 android:progress="16"
                 android:progressTint="#FF9900"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/moPrincipalBar"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/moPrincipalBar"
 
                 app:layout_constraintTop_toBottomOf="@+id/totalInterest" />
 
@@ -115,10 +113,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/armata"
-                android:text="Monthly Principal"
+                android:text="Month's Principal"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/titleMoInterest"
+                app:layout_constraintStart_toStartOf="@+id/titleMoInterest"
                 app:layout_constraintTop_toBottomOf="@+id/moInterestBar" />
 
             <TextView
@@ -143,15 +141,13 @@
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="0dp"
                 android:layout_height="2dp"
-                android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="32dp"
                 android:progress="52"
                 android:progressTint="#00C428"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/moInterestBar"
                 app:layout_constraintHorizontal_bias="1.0"
 
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/moInterestBar"
                 app:layout_constraintTop_toBottomOf="@+id/principal" />
 
             <TextView
@@ -162,8 +158,8 @@
                 android:fontFamily="@font/armata"
                 android:text="Loan Left"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/titleCummulativeInterest"
+                app:layout_constraintStart_toStartOf="@+id/titleCummulativeInterest"
                 app:layout_constraintTop_toBottomOf="@+id/interestBar" />
 
             <TextView
@@ -184,50 +180,36 @@
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="0dp"
                 android:layout_height="2dp"
-                android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="32dp"
                 android:progress="60"
                 android:progressTint="#3D0095"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/interestBar"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/interestBar"
                 app:layout_constraintTop_toBottomOf="@+id/loanLeft" />
 
-            <TextView
-                android:id="@+id/deleteExtraPP"
-                android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/down_text_input"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="180dp"
-                android:text="Extra Payment"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.115"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/loanLeftBar" />
+                android:layout_marginTop="32dp"
+                android:textAlignment="center"
+                app:errorEnabled="true"
+                app:layout_constraintEnd_toEndOf="@+id/loanLeftBar"
+                app:layout_constraintStart_toStartOf="@+id/loanLeftBar"
+                app:layout_constraintTop_toBottomOf="@+id/loanLeftBar">
 
-            <Button
-                android:id="@+id/updateBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="32dp"
-                android:text="Button"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/additionalPayment"
-                app:layout_constraintVertical_bias="0.0" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/additionalPayment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Extra Payment"
+                    android:imeOptions="actionDone"
+                    android:inputType="numberDecimal"
+                    android:textAlignment="center" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
-                android:id="@+id/additionalPayment"
-                android:layout_width="154dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="9dp"
-                android:ems="10"
-                android:imeOptions="actionDone"
-                android:inputType="numberDecimal"
-                app:layout_constraintBottom_toBottomOf="@+id/deleteExtraPP"
-                app:layout_constraintEnd_toStartOf="@+id/updateBtn"
-                app:layout_constraintStart_toEndOf="@+id/deleteExtraPP"
-                app:layout_constraintTop_toTopOf="@+id/deleteExtraPP" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
@@ -288,7 +270,7 @@
             android:id="@+id/calMonth"
             android:layout_width="103dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="32dp"
             android:background="@drawable/white_styled_box"
             android:clickable="true"
             android:focusable="true"

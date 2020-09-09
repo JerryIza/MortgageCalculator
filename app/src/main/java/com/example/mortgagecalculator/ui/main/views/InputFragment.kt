@@ -33,10 +33,16 @@ class InputFragment : Fragment() {
 
     private lateinit var binding: InputFragmentBinding
 
-    private lateinit var viewModel: AmortizationViewModel
+    lateinit var viewModel: AmortizationViewModel
 
     lateinit var option: Spinner
     lateinit var result: TextView
+
+    //Getting Today's Date
+    val cal = Calendar.getInstance()
+    val month = cal.get(Calendar.MONTH)
+    val day = cal.get(Calendar.DAY_OF_MONTH)
+    val year = cal.get(Calendar.YEAR)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,7 +59,7 @@ class InputFragment : Fragment() {
             ViewModelProvider(this).get(AmortizationViewModel::class.java)
         } ?: throw Exception("invalid Activity")
 
-
+        val textDate = binding.startBtn
         var initialLoanAmount: Double
         var years: Int
         var interest: Double
@@ -61,25 +67,20 @@ class InputFragment : Fragment() {
 
         val fullDecimalFormat = DecimalFormat("#,###.######")
 
-
         //getting data class variables from ViewModel state, and formatting once ran once
-        initialLoanAmount = viewModel.state.value!!.loanAmount
+        initialLoanAmount = viewModel.inputs.value!!.loanAmount
         val loanInput: String = initialLoanAmount.toString()
         mortgageLoan.setText(loanInput)
         //  these and below are reformatted
-        years = viewModel.state.value!!.yearAmount
+        years = viewModel.inputs.value!!.yearAmount
 
-        interest = viewModel.state.value!!.interestAmount
+        interest = viewModel.inputs.value!!.interestAmount
         val interestInput: String = String.format("%,.2f", interest)
         mortgageInterest.setText(interestInput)
 
-        downPayment = viewModel.state.value!!.downAmount
+        downPayment = viewModel.inputs.value!!.downAmount
         val totalPaid = downPayment
         mortgageDown.setText(fullDecimalFormat.format(totalPaid))
-
-
-        val textDate = binding.startBtn
-
 
 
         textDate.setOnClickListener {
@@ -90,12 +91,12 @@ class InputFragment : Fragment() {
             val datePickerDialog = DatePickerDialog(
                 requireContext(),
                 { _, mYear, mMonth, mDay ->
-                    textDate.text = "" + (mMonth + 1) + "/" + mDay + "/" + mYear
+                    textDate.text = ("" + (mMonth + 1) + "/" + mDay + "/" + mYear)
                     //both are instances not raw ints
-                    viewModel.state.value?.dateSimpleFormat =
+                    viewModel.inputs.value?.dateSimpleFormat =
                         "" + (mMonth + 1) + "/" + mDay + "/" + mYear
                 },
-                //where dialogstarts maybe do an if, so we don't forge
+                //Dialog start
                 year,
                 month,
                 day
@@ -105,6 +106,9 @@ class InputFragment : Fragment() {
                 getResults()
             }
         }
+
+
+
 
         option = yearSpinner
         result = spinnerresults
@@ -128,13 +132,13 @@ class InputFragment : Fragment() {
                 result.text = options[position]
                 val s = options[position]
                 years = s.toInt()
-                viewModel.state.value?.yearAmount = s.toInt()
+                viewModel.inputs.value?.yearAmount = s.toInt()
                 getResults()
                 setUpPieChart()
             }
         }
 
-        mortgageLoan.addTextChangedListener(object : TextWatcher {
+        binding.mortgageLoan.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
             }
 
@@ -150,7 +154,7 @@ class InputFragment : Fragment() {
             ) {
                 if (s.isNotEmpty()) {
                     initialLoanAmount = s.toString().toDouble()
-                    viewModel.state.value?.loanAmount = s.toString().toDouble()
+                    viewModel.inputs.value?.loanAmount = s.toString().toDouble()
                     //setting new var values to dataclass in ViewModel State.
                     getResults()
                     setUpPieChart()
@@ -158,7 +162,7 @@ class InputFragment : Fragment() {
             }
         })
 
-        mortgageInterest.addTextChangedListener(object : TextWatcher {
+        binding.mortgageInterest.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
             }
 
@@ -174,14 +178,14 @@ class InputFragment : Fragment() {
             ) {
                 if (s.isNotEmpty()) {
                     interest = s.toString().toDouble()
-                    viewModel.state.value?.interestAmount = s.toString().toDouble()
+                    viewModel.inputs.value?.interestAmount = s.toString().toDouble()
                     getResults()
                     setUpPieChart()
                 }
             }
         })
 
-        mortgageDown.addTextChangedListener(object : TextWatcher {
+        binding.mortgageDown.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
             }
 
@@ -195,45 +199,46 @@ class InputFragment : Fragment() {
             ) {
                 if (s.isNotEmpty()) {
                     downPayment = s.toString().toDouble()
-                    viewModel.state.value?.downAmount = s.toString().toDouble()
+                    viewModel.inputs.value?.downAmount = s.toString().toDouble()
                     getResults()
                     setUpPieChart()
                 }
             }
         })
-
     }
 
     fun getResults() {
-        println("get results executed")
-        viewModel.Calculate(AmortizationCalculator())
+        viewModel.calculate(AmortizationCalculator())
         scheduleRecycler?.adapter?.notifyDataSetChanged()
-        println("GetResults")
         setupObservers()
         setUpPieChart()
-
-
     }
 
     //setupObservers
     private fun setupObservers() {
-        println("observer called")
         viewModel.scheduleLiveData.observe(viewLifecycleOwner, Observer {
             bindResults(it!!.last())
         })
-
     }
 
+
     private fun bindResults(amortizationResults: AmortizationResults) {
-        println("bindresultsExecute")
         binding.totalInterest.text = amortizationResults.totalInterest
         binding.monthlyPayment.text = amortizationResults.monthlyPayment
         binding.payOffDate.text = amortizationResults.monthId
         binding.totalAmount.text = String.format("%,.2f", amortizationResults.totalAmount)
         binding.numberofPayments.text = viewModel.scheduleArrayList!!.size.toString()
-
+        //Setting up todays date
+        if(viewModel.inputs.value!!.dateSimpleFormat == ""){
+            binding.startBtn.text = ("${month + 1}/$day/$year")
+            viewModel.inputs.value!!.dateSimpleFormat = ("${month + 1}/$day/$year")
+        }else {
+            //Put today's or custom selected date in Model... ready to save.
+            binding.startBtn.text = viewModel.inputs.value!!.dateSimpleFormat
+        }
         setUpPieChart()
     }
+
 
 
     fun setUpPieChart() {
@@ -244,15 +249,17 @@ class InputFragment : Fragment() {
         chart.isRotationEnabled = false
         chart.setTouchEnabled(false)
         chart.description.isEnabled
-        chart.setExtraOffsets(0f, 5f, 0f, -10f)
+        chart.setExtraOffsets(0f, 0f, 0f, 0f)
 
         val transparentColor = Color.parseColor("#434343")
+        val holeColor = Color.parseColor("#F3F3F3")
         chart.isDrawHoleEnabled
-        chart.setHoleColor(Color.WHITE)
-        chart.holeRadius = 60f
+        chart.setHoleColor(holeColor)
+        chart.holeRadius = 70f
         chart.transparentCircleRadius = 65f
         chart.setTransparentCircleColor(transparentColor)
         chart.setTransparentCircleAlpha(9000)
+
 
         val yValue = ArrayList<PieEntry>()
 
@@ -269,6 +276,7 @@ class InputFragment : Fragment() {
         val pieData = PieData(dataSet)
         pieData.setValueTextSize(10f)
         pieData.setValueTextColor(Color.YELLOW)
+        chart.setEntryLabelColor(Color.GRAY)
 
         chart.data = pieData // set data and notifyDataSetChange
         chart.invalidate() // refresh chart

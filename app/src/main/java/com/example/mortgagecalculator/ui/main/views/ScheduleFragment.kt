@@ -18,7 +18,6 @@ class ScheduleFragment : Fragment() {
 
     private lateinit var binding: ScheduleFragmentBinding
 
-
     private lateinit var viewModel: AmortizationViewModel
 
     override fun onCreateView(
@@ -38,13 +37,14 @@ class ScheduleFragment : Fragment() {
 
         val scheduleList = viewModel.scheduleArrayList
 
+
         scheduleRecycler.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = ScheduleAdapter(scheduleList!!) {
-
                 findNavController().navigate(R.id.action_scheduleFragment_to_detailFragment)
                 //int equals get position clicked. we are saving position in state and pulling position in detail fragment again
-                viewModel.state.value?.recyclerPosition = it
+                viewModel.inputs.value?.recyclerPosition = it
+
             }
         }
     }

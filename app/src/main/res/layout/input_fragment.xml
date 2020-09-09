@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    >
 
 
     <TextView
         android:id="@+id/monthlyPayment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="32dp"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:translationZ="1sp"
@@ -380,7 +380,7 @@
                 android:textSize="24sp"
                 app:layout_constraintBottom_toTopOf="@+id/divider6"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.521"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/divider5"
                 app:layout_constraintTop_toBottomOf="@+id/startView2"
                 app:layout_constraintVertical_bias="1.0" />

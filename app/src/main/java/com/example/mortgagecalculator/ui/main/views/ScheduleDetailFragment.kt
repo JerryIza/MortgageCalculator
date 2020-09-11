@@ -46,10 +46,11 @@ class ScheduleDetailFragment : Fragment() {
 
         (binding.additionalPayment as EditText).setOnEditorActionListener { _, actionId, _ ->
             //payment does not exceed loan left.
+            //stream keys and check for no key and prevent updateResults
             if (binding.additionalPayment.text!!.isNotEmpty() && actionId == EditorInfo.IME_ACTION_DONE && binding.additionalPayment.text.toString()
                     .toInt() > maximumExtraPayment
             ) {
-                binding.additionalPayment.error = "Amount cannot exceed loan left"
+                binding.downTextInput.error = "Amount cannot exceed loan left"
             }
             //input and get results
             else if (actionId == EditorInfo.IME_ACTION_DONE && binding.additionalPayment.text!!.isNotEmpty()) {
@@ -72,13 +73,13 @@ class ScheduleDetailFragment : Fragment() {
             (viewModel.inputs.value?.recyclerPosition?.let { viewModel.scheduleArrayList?.get(it) })
         binding.calMonth.text = positionDetails?.monthId.toString()
         binding.monthlyInterest.text =
-            (positionDetails?.interest + "/" + viewModel.scheduleArrayList?.last()!!.monthlyPayment)
+            (positionDetails?.interest + " / " + viewModel.scheduleArrayList?.last()!!.monthlyPayment)
         binding.totalInterest.text =
-            (positionDetails?.totalInterest + "/" + viewModel.scheduleArrayList?.last()!!.totalInterest)
+            (positionDetails?.totalInterest + " / " + viewModel.scheduleArrayList?.last()!!.totalInterest)
         binding.principal.text =
-            (positionDetails?.principal + "/" + viewModel.scheduleArrayList?.last()!!.monthlyPayment)
+            (positionDetails?.principal + " / " + viewModel.scheduleArrayList?.last()!!.monthlyPayment)
         binding.loanLeft.text =
-            (positionDetails?.loanLeft.toString() + "/" + viewModel.inputs.value!!.loanAmount.toString())
+            (positionDetails?.loanLeft.toString() + " / " + viewModel.inputs.value!!.loanAmount.toString())
 
         binding.moInterestBar.progress = viewModel.getProgress(
             positionDetails!!.interest,

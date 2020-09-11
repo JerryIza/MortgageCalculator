@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
 
     <TextView
@@ -37,13 +36,13 @@
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="240dp"
+        android:layout_marginTop="220dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="1.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linearLayout"
@@ -52,24 +51,14 @@
             android:orientation="vertical">
 
 
-            <View
-                android:id="@+id/firstDivider"
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <TextView
                 android:id="@+id/payOffDate"
+                style="@style/smallTextWithFocus"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="16dp"
-                android:text="TextView"
-                android:textSize="18sp"
+                android:text="Aug 2050"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/secondDivider" />
 
@@ -78,6 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_marginStart="16dp"
+                android:fontFamily="@font/roboto_mono"
                 android:text="Pay-off Date"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -85,9 +75,11 @@
 
             <View
                 android:id="@+id/secondDivider"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="8dp"
                 android:background="?android:attr/listDivider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -96,9 +88,11 @@
 
             <View
                 android:id="@+id/thirdDivider"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="8dp"
                 android:background="?android:attr/listDivider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -106,9 +100,11 @@
 
             <View
                 android:id="@+id/fourthDivider"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="8dp"
                 android:background="?android:attr/listDivider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -116,9 +112,11 @@
 
             <View
                 android:id="@+id/fithDivider"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="8dp"
                 android:background="?android:attr/listDivider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -127,25 +125,25 @@
 
             <TextView
                 android:id="@+id/numberofPayments"
+                style="@style/smallTextWithFocus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="16dp"
-                android:text="TextView"
-                android:textSize="18sp"
+                android:text="360"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/firstDivider"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:layout_conversion_absoluteHeight="24dp"
                 tools:layout_conversion_absoluteWidth="73dp" />
 
             <TextView
                 android:id="@+id/totalInterest"
+                style="@style/smallTextWithFocus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="16dp"
-                android:text="TextView"
-                android:textSize="18sp"
+                android:text="61,656.09"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/thirdDivider"
                 tools:layout_conversion_absoluteHeight="24dp"
@@ -153,12 +151,12 @@
 
             <TextView
                 android:id="@+id/totalAmount"
+                style="@style/smallTextWithFocus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="16dp"
-                android:text="TextView"
-                android:textSize="18sp"
+                android:text="161,656.09"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fourthDivider"
                 tools:layout_conversion_absoluteHeight="24dp"
@@ -169,6 +167,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:fontFamily="@font/roboto_mono"
                 android:text="No. of Payments"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -179,6 +178,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:fontFamily="@font/roboto_mono"
                 android:text="Total Interest"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -189,222 +189,176 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:fontFamily="@font/roboto_mono"
                 android:text="Total Amount"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/totalAmount" />
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_loan"
+                style="Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:text="Loan Amount"
-                android:textSize="14dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fithDivider" />
-
-            <EditText
-                android:id="@+id/mortgageLoan"
-                style="@style/InputNumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:autofillHints=""
-                android:background="@drawable/styled_box"
-                android:drawablePadding="12dp"
-                android:ems="10"
-                android:hint="@string/loan"
-                android:imeOptions="actionDone"
-                android:inputType="number"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
-                android:textAlignment="center"
-                android:textSize="32sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-            <View
-                android:id="@+id/divider3"
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
-                android:background="?android:attr/listDivider"
+                android:layout_marginEnd="8dp"
+                app:errorEnabled="true"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mortgageLoan" />
+                app:layout_constraintTop_toBottomOf="@+id/fithDivider">
 
-            <TextView
-                android:id="@+id/textView8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:text="Interest Rate %"
-                android:textSize="14dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/divider4" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/mortgageLoan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_slab"
+                    android:hint="loan Amount"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:textAlignment="center"
+                    android:textColor="@color/primaryFocusFont"
+                    android:textSize="32sp" />
 
-            <EditText
-                android:id="@+id/mortgageInterest"
-                style="@style/InputNumber"
+                <View
+                    android:id="@+id/delete2"
+                    android:layout_width="0dp"
+                    android:layout_height="1.2dp"
+                    android:background="@color/underlineColor" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_interest"
+                style="Widget.MaterialComponents.TextInputLayout.FilledBox"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@drawable/styled_box"
-                android:drawablePadding="12dp"
-                android:ems="10"
-                android:fontFamily="@font/armata"
-                android:hint="Interest %"
-                android:imeOptions="actionDone"
-                android:inputType="numberDecimal"
-                android:paddingBottom="8dp"
-                android:textAlignment="center"
-                android:textColor="#BF000000"
-                android:textSize="32sp"
-                android:textStyle="normal"
-                app:layout_constraintBottom_toBottomOf="@+id/divider4"
-                app:layout_constraintEnd_toStartOf="@+id/divider4"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                app:errorEnabled="true"
+                app:layout_constraintEnd_toStartOf="@+id/guidelinelHalf"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView8" />
+                app:layout_constraintTop_toBottomOf="@+id/text_input_loan">
 
-            <View
-                android:id="@+id/divider4"
-                android:layout_width="1dp"
-                android:layout_height="0dp"
-                android:background="?android:attr/listDivider"
-                app:layout_constraintBottom_toTopOf="@+id/divider2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider3"
-                app:layout_constraintVertical_bias="0.0" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/mortgageInterest"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_slab"
+                    android:hint="Interest Rate %"
+                    android:imeOptions="actionDone"
+                    android:inputType="numberDecimal"
+                    android:textAlignment="center"
+                    android:textColor="@color/primaryFocusFont"
+                    android:textSize="32sp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/years"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="3dp"
+                android:fontFamily="@font/roboto_slab"
                 android:text="Years"
-                android:textSize="14dp"
-                app:layout_constraintStart_toEndOf="@+id/divider4"
-                app:layout_constraintTop_toTopOf="@+id/divider4" />
-
-            <View
-                android:id="@+id/divider2"
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:layout_marginTop="90dp"
-                android:background="?android:attr/listDivider"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider3" />
-
-            <TextView
-                android:id="@+id/downPaymentView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:text="Down Payment"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider2" />
-
-            <EditText
-                android:id="@+id/mortgageDown"
-                style="@style/InputNumber"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@drawable/styled_box"
-                android:ems="10"
-                android:hint="Down"
-                android:imeOptions="actionDone"
-                android:inputType="numberDecimal"
-                android:paddingBottom="8dp"
-                android:textAlignment="center"
-                android:textSize="32sp"
-                app:layout_constraintBottom_toTopOf="@+id/divider6"
-                app:layout_constraintEnd_toStartOf="@+id/divider5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/downPaymentView" />
+                android:textSize="12sp"
+                app:layout_constraintBottom_toTopOf="@+id/yearSpinner"
+                app:layout_constraintStart_toStartOf="@+id/yearSpinner"
+                app:layout_constraintTop_toTopOf="@+id/text_input_interest"
+                app:layout_constraintVertical_bias=".10" />
 
             <Spinner
                 android:id="@+id/yearSpinner"
-                style="@style/InputNumber"
+                style="@style/Widget.AppCompat.Spinner.Underlined"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="@+id/divider4"
+                android:layout_height="70dp"
+                android:layout_marginStart="7dp"
+                android:layout_marginEnd="8dp"
+                android:entries="@array/years"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="@+id/text_input_interest"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/divider4"
-                app:layout_constraintTop_toBottomOf="@+id/divider3"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintStart_toStartOf="@+id/guidelinelHalf"
+                app:layout_constraintTop_toTopOf="@+id/text_input_interest"
+                app:layout_constraintVertical_bias=".36" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_down"
+                style="Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                app:errorEnabled="true"
+                app:layout_constraintEnd_toStartOf="@+id/guidelinelHalf"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_input_interest">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/mortgageDown"
+                    android:layout_width="match_parent"
+
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_slab"
+                    android:hint="Down Payment"
+                    android:imeOptions="actionDone"
+                    android:inputType="numberDecimal"
+                    android:textAlignment="center"
+                    android:textColor="@color/primaryFocusFont"
+                    android:textSize="32sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
 
             <TextView
-                android:id="@+id/spinnerresults"
-                style="@style/InputNumber"
+                android:id="@+id/start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:text="TextView"
-                app:layout_constraintBottom_toBottomOf="@+id/yearSpinner"
-                app:layout_constraintEnd_toEndOf="@+id/yearSpinner"
-                app:layout_constraintStart_toEndOf="@+id/divider4"
-                app:layout_constraintTop_toTopOf="@+id/yearSpinner"
-                app:layout_constraintVertical_bias="0.6" />
-
-            <TextView
-                android:id="@+id/startView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="Start Date"
-                app:layout_constraintBottom_toBottomOf="@+id/downPaymentView"
-                app:layout_constraintStart_toEndOf="@+id/divider5"
-                app:layout_constraintTop_toTopOf="@+id/downPaymentView" />
+                android:layout_marginStart="3dp"
+                android:layout_marginBottom="6dp"
+                android:fontFamily="@font/roboto_slab"
+                android:text="Loan Start Date"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toTopOf="@+id/startBtn"
+                app:layout_constraintStart_toStartOf="@+id/startBtn" />
 
             <Button
                 android:id="@+id/startBtn"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@drawable/white_shape"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="7dp"
+                android:layout_marginEnd="8dp"
+                android:background="@color/backgroundTint"
                 android:drawablePadding="0dp"
-                android:fontFamily="@font/armata"
-                android:paddingBottom="10dp"
+                android:fontFamily="@font/roboto_slab"
+                android:paddingTop="3dp"
                 android:text="Today"
                 android:textAllCaps="false"
                 android:textColor="#BF000000"
                 android:textSize="24sp"
-                app:layout_constraintBottom_toTopOf="@+id/divider6"
+                app:layout_constraintBottom_toBottomOf="@+id/text_input_down"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/divider5"
-                app:layout_constraintTop_toBottomOf="@+id/startView2"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintStart_toStartOf="@+id/guidelinelHalf"
+                app:layout_constraintTop_toTopOf="@+id/text_input_down"
+                app:layout_constraintVertical_bias="0.472" />
 
             <View
-                android:id="@+id/divider5"
-                android:layout_width="1dp"
-                android:layout_height="0dp"
-                android:background="?android:attr/listDivider"
-                app:layout_constraintBottom_toTopOf="@+id/divider6"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider2" />
+                android:id="@+id/dateUnderline"
+                android:layout_width="0dp"
+                android:layout_height="1.2dp"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="4dp"
+                android:background="@color/underlineColor"
+                app:layout_constraintEnd_toEndOf="@+id/startBtn"
+                app:layout_constraintStart_toStartOf="@+id/startBtn"
+                app:layout_constraintTop_toBottomOf="@+id/startBtn" />
 
-            <View
-                android:id="@+id/divider6"
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelinelHalf"
                 android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:layout_marginTop="90dp"
-                android:background="?android:attr/listDivider"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider2" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".5" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -415,9 +369,12 @@
         android:id="@+id/pieChart"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="@drawable/grey_styled_box"
         app:layout_constraintBottom_toTopOf="@+id/scrollView2"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

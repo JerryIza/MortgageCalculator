@@ -9,9 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Spinner
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -34,9 +31,6 @@ class InputFragment : Fragment() {
     private lateinit var binding: InputFragmentBinding
 
     lateinit var viewModel: AmortizationViewModel
-
-    lateinit var option: Spinner
-    lateinit var result: TextView
 
     //Getting Today's Date
     val cal = Calendar.getInstance()
@@ -71,8 +65,9 @@ class InputFragment : Fragment() {
         initialLoanAmount = viewModel.inputs.value!!.loanAmount
         val loanInput: String = initialLoanAmount.toString()
         mortgageLoan.setText(loanInput)
-        //  these and below are reformatted
-        years = viewModel.inputs.value!!.yearAmount
+
+        viewModel.inputs.value?.yearSpinnerPos?.let { binding.yearSpinner.setSelection(it) }
+
 
         interest = viewModel.inputs.value!!.interestAmount
         val interestInput: String = String.format("%,.2f", interest)
@@ -106,37 +101,31 @@ class InputFragment : Fragment() {
                 getResults()
             }
         }
+        //val myString = "some value" //the value you want the position for
 
 
+        //val spinnerPosition = mySpinner.getAdapter().getPosition(myString)
+        //set the default according to value
 
+        //set the default according to value
+        //yearSpinner.setSelection(spinnerPosition)
 
-        option = yearSpinner
-        result = spinnerresults
-
-        val options = arrayOf("30", "15")
-
-        option.adapter =
-            context?.let { ArrayAdapter<String>(it, android.R.layout.simple_spinner_item, options) }
 
         binding.yearSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                result.text = "Select an option "
             }
 
             override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
+                parent: AdapterView<*>?, view: View?, position: Int, id: Long
             ) {
-                result.text = options[position]
-                val s = options[position]
-                years = s.toInt()
-                viewModel.inputs.value?.yearAmount = s.toInt()
+                val s: Int = parent?.getItemAtPosition(position).toString().toInt()
+                viewModel.inputs.value?.yearSpinnerPos = position
+                viewModel.inputs.value?.yearAmount = s
                 getResults()
-                setUpPieChart()
             }
         }
+
+
 
         binding.mortgageLoan.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
@@ -157,7 +146,6 @@ class InputFragment : Fragment() {
                     viewModel.inputs.value?.loanAmount = s.toString().toDouble()
                     //setting new var values to dataclass in ViewModel State.
                     getResults()
-                    setUpPieChart()
                 }
             }
         })
@@ -180,7 +168,6 @@ class InputFragment : Fragment() {
                     interest = s.toString().toDouble()
                     viewModel.inputs.value?.interestAmount = s.toString().toDouble()
                     getResults()
-                    setUpPieChart()
                 }
             }
         })
@@ -201,7 +188,6 @@ class InputFragment : Fragment() {
                     downPayment = s.toString().toDouble()
                     viewModel.inputs.value?.downAmount = s.toString().toDouble()
                     getResults()
-                    setUpPieChart()
                 }
             }
         })
@@ -223,16 +209,16 @@ class InputFragment : Fragment() {
 
 
     private fun bindResults(amortizationResults: AmortizationResults) {
-        binding.totalInterest.text = amortizationResults.totalInterest
-        binding.monthlyPayment.text = amortizationResults.monthlyPayment
-        binding.payOffDate.text = amortizationResults.monthId
-        binding.totalAmount.text = String.format("%,.2f", amortizationResults.totalAmount)
+        binding.monthlyPayment.text = ("$${amortizationResults.monthlyPayment}")
         binding.numberofPayments.text = viewModel.scheduleArrayList!!.size.toString()
+        binding.payOffDate.text = amortizationResults.monthId
+        binding.totalInterest.text = ("$${amortizationResults.totalInterest}")
+        binding.totalAmount.text = ("$${String.format("%,.2f", amortizationResults.totalAmount)}")
         //Setting up todays date
-        if(viewModel.inputs.value!!.dateSimpleFormat == ""){
+        if (viewModel.inputs.value!!.dateSimpleFormat == "") {
             binding.startBtn.text = ("${month + 1}/$day/$year")
             viewModel.inputs.value!!.dateSimpleFormat = ("${month + 1}/$day/$year")
-        }else {
+        } else {
             //Put today's or custom selected date in Model... ready to save.
             binding.startBtn.text = viewModel.inputs.value!!.dateSimpleFormat
         }
@@ -240,31 +226,31 @@ class InputFragment : Fragment() {
     }
 
 
-
     fun setUpPieChart() {
         val chart = binding.pieChart
+        val transparentColor = Color.parseColor("#434343")
+        val holeColor = Color.parseColor("#40F3F3F3")
 
-        //move to own function
         chart.setUsePercentValues(true)
         chart.isRotationEnabled = false
         chart.setTouchEnabled(false)
         chart.description.isEnabled
         chart.setExtraOffsets(0f, 0f, 0f, 0f)
-
-        val transparentColor = Color.parseColor("#434343")
-        val holeColor = Color.parseColor("#F3F3F3")
+        chart.setDrawEntryLabels(false)
         chart.isDrawHoleEnabled
         chart.setHoleColor(holeColor)
-        chart.holeRadius = 70f
+        chart.holeRadius = 60f
         chart.transparentCircleRadius = 65f
         chart.setTransparentCircleColor(transparentColor)
         chart.setTransparentCircleAlpha(9000)
+        chart.description.text = ""
+
 
 
         val yValue = ArrayList<PieEntry>()
 
-        yValue.add(PieEntry(viewModel.graphProgressPink().toFloat(), "Interest"))
-        yValue.add(PieEntry(viewModel.graphProgressBlue().toFloat(), "Principal"))
+        yValue.add(PieEntry(viewModel.graphProgressPink().toFloat(), "Interest %"))
+        yValue.add(PieEntry(viewModel.graphProgressBlue().toFloat(), "Principal %"))
 
         val blueColor = Color.parseColor("#61CFF8")
         val pinkColor = Color.parseColor("#FE657A")
@@ -276,7 +262,6 @@ class InputFragment : Fragment() {
         val pieData = PieData(dataSet)
         pieData.setValueTextSize(10f)
         pieData.setValueTextColor(Color.YELLOW)
-        chart.setEntryLabelColor(Color.GRAY)
 
         chart.data = pieData // set data and notifyDataSetChange
         chart.invalidate() // refresh chart

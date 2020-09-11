@@ -1,4 +1,5 @@
 <resources>
+
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorAccent</item>
@@ -7,5 +8,36 @@
         <item name="android:navigationBarColor">#E3E3E3</item>
         <item name="android:statusBarColor">#F3F3F3</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="android:spinnerItemStyle" >
+            @style/mySpinnerItemStyle
+        </item>
+        <item name="spinnerDropDownItemStyle">
+            @style/myDropDownStyle
+        </item>
     </style>
+
+    <style name="mySpinnerItemStyle">
+        <item name="android:textColor">@color/primaryFocusFont</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:fontFamily">@font/roboto_slab</item>
+        <item name="android:paddingTop">7dp</item>
+        <item name="android:paddingLeft">32dp</item>
+    </style>
+
+    <style name="myDropDownStyle">
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:fontFamily">@font/roboto_slab</item>
+        <item name="android:textColor">@color/primaryFocusFont</item>
+    </style>
+
+    <style name="smallTextWithFocus">
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/roboto_slab</item>
+        <item name="android:textColor">@color/primaryFocusFont</item>
+    </style>
+
+    <dimen name="big_font">22sp</dimen>
+
 </resources>

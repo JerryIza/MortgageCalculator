@@ -283,7 +283,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guidelinelHalf"
                 app:layout_constraintTop_toTopOf="@+id/text_input_interest"
-                app:layout_constraintVertical_bias=".36" />
+                app:layout_constraintVertical_bias=".38" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/text_input_down"
@@ -344,7 +344,7 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/guidelinelHalf"
                 app:layout_constraintTop_toTopOf="@+id/text_input_down"
-                app:layout_constraintVertical_bias="0.462" />
+                app:layout_constraintVertical_bias="0.47" />
 
             <View
                 android:id="@+id/dateUnderline"

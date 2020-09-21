@@ -10,7 +10,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Database(entities = [Input::class],
-    version = 2)
+    version = 1)
 
 @TypeConverters(Converter::class)
 abstract class InputDatabase : RoomDatabase() {

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/loan_text_input"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        app:errorEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dbDate">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/dbLoan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Loan Amount"
+            android:inputType="number" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/interest_text_input"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        app:errorEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loan_text_input">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/dbInterest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Interest"
+            android:inputType="numberDecimal" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/down_text_input"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        app:errorEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/interest_text_input">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/dbDown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Down Payment"
+            android:inputType="numberDecimal" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/title_text_input"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        app:errorEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/dbTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_slab"
+            android:hint="Title"
+            android:imeOptions="actionDone"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/dbDate"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:clickable="false"
+        android:fontFamily="@font/roboto_slab"
+        android:hint="@string/start_date"
+        android:text="Start Date"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_text_input" />
+
+    <Button
+        android:id="@+id/saveBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#481A9B"
+        android:text="Save"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/paymentsView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_slab"
+        android:text="# of Payments: 0"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@+id/paymentsSwitch"
+        app:layout_constraintStart_toStartOf="@+id/paymentsSwitch"
+        app:layout_constraintTop_toBottomOf="@+id/down_text_input" />
+
+    <Switch
+        android:id="@+id/paymentsSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="2dp"
+        android:fontFamily="@font/roboto_slab"
+        android:text="Save Payments"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/yearSpinner"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/years"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="3dp"
+        android:fontFamily="@font/roboto_slab"
+        android:text="Years"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/yearSpinner"
+        app:layout_constraintStart_toStartOf="@+id/yearSpinner"
+        app:layout_constraintTop_toTopOf="@+id/text_input_interest"
+        app:layout_constraintVertical_bias=".10" />
+
+    <Spinner
+        android:id="@+id/yearSpinner"
+        style="@style/Widget.AppCompat.Spinner.Underlined"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:entries="@array/years"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/paymentsSwitch"
+        app:layout_constraintTop_toBottomOf="@+id/down_text_input" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

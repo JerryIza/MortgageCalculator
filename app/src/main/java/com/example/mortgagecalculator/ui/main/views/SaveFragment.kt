@@ -47,12 +47,6 @@ class SaveFragment : Fragment() {
         setupObservers()
         binding = SaveFragmentBinding.inflate(inflater, container, false)
 
-        binding.deleteBtn.setOnClickListener {
-            GlobalScope.launch(Dispatchers.IO) {
-                viewModel.deleteAllInputs()
-            }
-            updateList()
-        }
 
         binding.floatingSaveButton.setOnClickListener {
             viewModel.inputs.value?.savedInputsTitle = ""
@@ -83,7 +77,7 @@ class SaveFragment : Fragment() {
 
     private fun setupObservers() {
         viewModel.inputs.observe(viewLifecycleOwner, Observer {
-            binding.selectedInputView.text = ("Input selected: ${it.savedInputsTitle}")
+            binding.selectedInputView.text = ("Inputs selected: ${it.savedInputsTitle}")
         })
     }
 

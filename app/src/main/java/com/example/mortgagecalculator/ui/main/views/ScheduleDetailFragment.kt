@@ -2,7 +2,6 @@ package com.example.mortgagecalculator.ui.main.views
 
 import android.graphics.Color
 import android.os.Bundle
-import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,6 @@ import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.mortgagecalculator.databinding.DetailFragmentBinding
-import com.example.mortgagecalculator.db.Input
 import com.example.mortgagecalculator.model.AmortizationCalculator
 import com.example.mortgagecalculator.ui.main.viewmodels.AmortizationViewModel
 import com.github.mikephil.charting.animation.Easing
@@ -57,10 +55,12 @@ class ScheduleDetailFragment : Fragment() {
                 saveExtraPayment()
                 updateResults()
                 binding.additionalPayment.setSelection(binding.additionalPayment.length())
+                viewModel.updateExtraPaymentSize()
             } else {
                 //if empty, delete key for extra payment
                 viewModel.inputs.value!!.payments.remove(position.toString())
                 updateResults()
+                viewModel.updateExtraPaymentSize()
             }
             false
         }

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="130dp"
+    android:background="@drawable/list_shape">
+
+    <TextView
+        android:id="@+id/saveTitleName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/roboto_slab"
+        android:text="My Favorite View"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/saveDSF"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/roboto_slab"
+        android:text="Start Date: 9/4/2020"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/saveTitleName" />
+
+    <TextView
+        android:id="@+id/saveLoanAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/roboto_slab"
+        android:text="loan: 100,000"
+        app:layout_constraintStart_toEndOf="@+id/saveDSF"
+        app:layout_constraintTop_toTopOf="@+id/saveDSF" />
+
+    <TextView
+        android:id="@+id/saveYearAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/roboto_slab"
+        android:text="Years: 30"
+        app:layout_constraintStart_toStartOf="@+id/saveDSF"
+        app:layout_constraintTop_toBottomOf="@+id/saveDSF" />
+
+    <TextView
+        android:id="@+id/saveInterestAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/roboto_slab"
+        android:text="Interest: 3.5% "
+        app:layout_constraintStart_toEndOf="@+id/saveYearAmount"
+        app:layout_constraintTop_toTopOf="@+id/saveYearAmount" />
+
+    <TextView
+        android:id="@+id/saveDownAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/roboto_slab"
+        android:text="Money Down: 20,000.00"
+        app:layout_constraintStart_toEndOf="@+id/saveInterestAmount"
+        app:layout_constraintTop_toTopOf="@+id/saveInterestAmount" />
+
+    <TextView
+        android:id="@+id/saveExtraPayments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/roboto_slab"
+        android:text="Number of Extra Payments: 10"
+        app:layout_constraintStart_toStartOf="@+id/saveYearAmount"
+        app:layout_constraintTop_toBottomOf="@+id/saveYearAmount" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/recurringPayments"
+        android:title="Add Recurring Payments" />
+
+    <item
+        android:id="@+id/deletePayments"
+        android:title="Delete All Payments" />
+
+</menu>

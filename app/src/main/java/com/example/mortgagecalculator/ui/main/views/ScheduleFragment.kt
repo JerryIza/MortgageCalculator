@@ -15,7 +15,6 @@ import com.example.mortgagecalculator.ui.main.adapters.ScheduleAdapter
 import com.example.mortgagecalculator.ui.main.viewmodels.AmortizationViewModel
 import kotlinx.android.synthetic.main.accept_dialog.*
 import kotlinx.android.synthetic.main.payment_dialog.*
-import kotlinx.android.synthetic.main.schedule_fragment.*
 
 
 class ScheduleFragment : Fragment() {
@@ -26,6 +25,7 @@ class ScheduleFragment : Fragment() {
 
     private lateinit var adapter: ScheduleAdapter
 
+    val dateArrayList: ArrayList<String>? = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -88,15 +88,15 @@ class ScheduleFragment : Fragment() {
         val dialog = activity?.let { Dialog(it) }
         dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.payment_dialog)
-        val dateArrayList: ArrayList<String>? = ArrayList()
-
         //dialog.text_dialog.text = ("Do wish to load ${adapter.getItem(position).savedInputsTitle} Inputs?")
-        val navController = Navigation.findNavController(requireActivity(), R.id.navHostFragment)
+
         val confirm = dialog.confirmBtn
         val cancel = dialog.cancelBtn
         val editText = dialog.additionalPayment
         val textInput = dialog.text_input_payments
         val datePicker = dialog.dpDate
+        dateArrayList?.clear()
+
         dialog.show()
         confirm.setOnClickListener {
             if (editText.text.isNullOrEmpty()) {
@@ -111,8 +111,8 @@ class ScheduleFragment : Fragment() {
                 }
                 viewModel.calculate(AmortizationCalculator())
                 adapter.notifyDataSetChanged()
+                viewModel.updateExtraPaymentSize()
                 dialog.dismiss()
-
             }
         }
 
@@ -133,7 +133,7 @@ class ScheduleFragment : Fragment() {
         if (viewModel.inputs.value?.payments!!.isEmpty()) {
             text.text = ("There are no payments to delete.")
         } else {
-            text.text = ("Do you wish to delete all extra payments?")
+            text.text = ("Do you wish to delete all ${(viewModel.inputs.value!!.extraPaymentSize)} extra payments? ")
         }
         confirm.setOnClickListener {
             viewModel.inputs.value!!.payments.clear()

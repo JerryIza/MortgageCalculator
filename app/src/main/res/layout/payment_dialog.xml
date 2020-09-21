@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="350dp"
+    android:layout_height="450dp">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_input_payments"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/additionalPayment"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_slab"
+            android:hint="Extra Monthly Payment"
+            android:imeOptions="actionDone"
+            android:inputType="numberDecimal"
+            android:textAlignment="center"
+            android:textColor="@color/primaryFocusFont"
+            android:textSize="18sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/startAoPayments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/roboto_slab"
+        android:text="Extra Payment Begin Date"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/dpDate"
+        app:layout_constraintStart_toStartOf="@+id/dpDate"
+        app:layout_constraintTop_toBottomOf="@+id/text_input_payments" />
+
+
+    <Button
+        android:id="@+id/confirmBtn"
+        android:layout_width="0dp"
+
+        android:layout_height="35dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/grey_rounded_box"
+        android:backgroundTint="@color/colorAccept"
+        android:text="Confirm"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dpDate" />
+
+    <Button
+        android:id="@+id/cancelBtn"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/grey_rounded_box"
+        android:backgroundTint="@color/colorDecline"
+        android:text="Cancel"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@+id/confirmBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline4"
+        app:layout_constraintTop_toTopOf="@+id/confirmBtn" />
+
+    <DatePicker
+        android:id="@+id/dpDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/startAoPayments" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".5" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

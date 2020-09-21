@@ -22,6 +22,8 @@ class AmortizationViewModel @ViewModelInject constructor(
 
     val inputs: MutableLiveData<Input> get() = _inputs
 
+    var paymentArrayList: ArrayList<String> = arrayListOf()
+
     var scheduleArrayList: ArrayList<AmortizationResults>? = null
 
     val scheduleLiveData: MutableLiveData<ArrayList<AmortizationResults>?> = MutableLiveData()
@@ -88,7 +90,6 @@ class AmortizationViewModel @ViewModelInject constructor(
                 )
             )
         }
-        println("my list " + scheduleArrayList)
         scheduleArrayList?.last()?.totalAmount = calculatorResults[0].totalAmount
         scheduleArrayList?.last()?.monthlyPayment = calculatorResults[0].monthlyPayment
     }
@@ -127,6 +128,17 @@ class AmortizationViewModel @ViewModelInject constructor(
         ((position.replace(Regex(","), "").toDouble()) / (total.replace(Regex(","), "")
             .toDouble())) * 100
 
+    fun updateExtraPaymentSize(){
+        for (i in 0 until scheduleArrayList!!.size){
+            if(scheduleArrayList!![i].additionalPayment == "EP"){
+                paymentArrayList.add(i.toString())
+            }
+        }
+        inputs.value?.extraPaymentSize = paymentArrayList.size.toString()
+        paymentArrayList.clear()
+
+    }
+
     private fun getListDetails() {
         populateScheduleList()
         scheduleLiveData.value = scheduleArrayList
@@ -135,7 +147,6 @@ class AmortizationViewModel @ViewModelInject constructor(
     private fun populateScheduleList() {
         scheduleArrayList = ArrayList()
     }
-
 
     init {
         getListDetails()

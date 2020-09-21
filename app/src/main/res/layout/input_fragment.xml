@@ -10,7 +10,7 @@
         android:id="@+id/monthlyPayment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="16dp"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:translationZ="1sp"
@@ -69,7 +69,8 @@
                 android:layout_marginStart="16dp"
                 android:fontFamily="@font/roboto_mono"
                 android:text="Pay-off Date"
-                android:textSize="18sp"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/payOffDate"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/payOffDate" />
 
@@ -169,7 +170,8 @@
                 android:layout_marginStart="16dp"
                 android:fontFamily="@font/roboto_mono"
                 android:text="No. of Payments"
-                android:textSize="18sp"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/numberofPayments"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/numberofPayments" />
 
@@ -180,7 +182,8 @@
                 android:layout_marginStart="16dp"
                 android:fontFamily="@font/roboto_mono"
                 android:text="Total Interest"
-                android:textSize="18sp"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/totalInterest"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/totalInterest" />
 
@@ -191,7 +194,8 @@
                 android:layout_marginStart="16dp"
                 android:fontFamily="@font/roboto_mono"
                 android:text="Total Amount"
-                android:textSize="18sp"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/totalAmount"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/totalAmount" />
 
@@ -340,7 +344,7 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/guidelinelHalf"
                 app:layout_constraintTop_toTopOf="@+id/text_input_down"
-                app:layout_constraintVertical_bias="0.472" />
+                app:layout_constraintVertical_bias="0.462" />
 
             <View
                 android:id="@+id/dateUnderline"
@@ -352,6 +356,8 @@
                 app:layout_constraintEnd_toEndOf="@+id/startBtn"
                 app:layout_constraintStart_toStartOf="@+id/startBtn"
                 app:layout_constraintTop_toBottomOf="@+id/startBtn" />
+
+
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guidelinelHalf"
@@ -369,7 +375,6 @@
         android:id="@+id/pieChart"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@drawable/grey_styled_box"
         app:layout_constraintBottom_toTopOf="@+id/scrollView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

@@ -50,7 +50,7 @@ class AmortizationCalculator {
             if (match) {
                 //make double so we can format text,
                 val extraPayment: Double? = (items[i.toString()])?.toDouble()
-                newLoan -= (newPrincipal + extraPayment!!)
+                newLoan -=  extraPayment!!
                 additionalPayment = "EP"
             }
             scheduleArrayList?.add(

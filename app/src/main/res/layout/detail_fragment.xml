@@ -69,47 +69,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/monthlyInterest" />
 
             <TextView
-                android:id="@+id/titleCummulativeInterest"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:fontFamily="@font/roboto_mono"
-                android:text="Interest to Date"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@+id/titleMoPrincipal"
-                app:layout_constraintHorizontal_bias="0.524"
-                app:layout_constraintStart_toStartOf="@+id/titleMoPrincipal"
-                app:layout_constraintTop_toBottomOf="@+id/moPrincipalBar" />
-
-            <TextView
-                android:id="@+id/totalInterest"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:fontFamily="@font/roboto_mono"
-                android:gravity="center_horizontal"
-                android:text="932.97/93,2255.78"
-                android:textColor="?android:attr/textColorSecondary"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/titleCummulativeInterest" />
-
-            <ProgressBar
-                android:id="@+id/interestBar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="0dp"
-                android:layout_height="2dp"
-                android:layout_marginTop="8dp"
-                android:progress="16"
-                android:progressTint="#FF9900"
-                app:layout_constraintEnd_toEndOf="@+id/moPrincipalBar"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/moPrincipalBar"
-
-                app:layout_constraintTop_toBottomOf="@+id/totalInterest" />
-
-            <TextView
                 android:id="@+id/titleMoPrincipal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -154,6 +113,86 @@
                 app:layout_constraintTop_toBottomOf="@+id/principal" />
 
             <TextView
+                android:id="@+id/titleCummulativeInterest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto_mono"
+                android:text="Interest to Date"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/titleMoPrincipal"
+                app:layout_constraintHorizontal_bias="0.524"
+                app:layout_constraintStart_toStartOf="@+id/titleMoPrincipal"
+                app:layout_constraintTop_toBottomOf="@+id/moPrincipalBar" />
+
+            <TextView
+                android:id="@+id/totalInterest"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:fontFamily="@font/roboto_mono"
+                android:gravity="center_horizontal"
+                android:text="932.97/93,2255.78"
+                android:textColor="?android:attr/textColorSecondary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/titleCummulativeInterest" />
+
+            <ProgressBar
+                android:id="@+id/interestBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_marginTop="8dp"
+                android:progress="16"
+                android:progressTint="#FF9900"
+                app:layout_constraintEnd_toEndOf="@+id/moPrincipalBar"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/moPrincipalBar"
+
+                app:layout_constraintTop_toBottomOf="@+id/totalInterest" />
+
+            <TextView
+                android:id="@+id/titleCummulativePrincipal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto_mono"
+                android:text="Principal to Date"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/titleCummulativeInterest"
+                app:layout_constraintStart_toStartOf="@+id/titleCummulativeInterest"
+                app:layout_constraintTop_toBottomOf="@+id/interestBar" />
+
+            <TextView
+                android:id="@+id/totalPrincipal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:fontFamily="@font/roboto_mono"
+                android:gravity="center_horizontal"
+                android:textColor="?android:attr/textColorSecondary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/titleCummulativePrincipal"
+                tools:text="50,000/100,000.00" />
+
+            <ProgressBar
+                android:id="@+id/totalPrincipalBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_marginTop="8dp"
+                android:progress="60"
+                android:progressTint="#5DC4EA"
+                app:layout_constraintEnd_toEndOf="@+id/interestBar"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/interestBar"
+                app:layout_constraintTop_toBottomOf="@+id/totalPrincipal" />
+
+            <TextView
                 android:id="@+id/titleLoan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -163,7 +202,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="@+id/titleCummulativeInterest"
                 app:layout_constraintStart_toStartOf="@+id/titleCummulativeInterest"
-                app:layout_constraintTop_toBottomOf="@+id/interestBar" />
+                app:layout_constraintTop_toBottomOf="@+id/totalPrincipalBar" />
 
             <TextView
                 android:id="@+id/loanLeft"
@@ -197,10 +236,11 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="32dp"
                 android:textAlignment="center"
                 app:errorEnabled="true"
                 app:layout_constraintEnd_toEndOf="@+id/loanLeftBar"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/loanLeftBar"
                 app:layout_constraintTop_toBottomOf="@+id/loanLeftBar">
 
@@ -225,7 +265,7 @@
         android:layout_height="60dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:background="@drawable/grey_styled_box"
+        android:background="@drawable/white_style_box"
         app:layout_constraintBottom_toTopOf="@+id/scrollView3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -278,7 +318,7 @@
             android:layout_width="103dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:background="@drawable/white_styled_box"
+            android:background="@drawable/grey_rounded_box"
             android:clickable="true"
             android:focusable="true"
             android:fontFamily="@font/roboto_mono"

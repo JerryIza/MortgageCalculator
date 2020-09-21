@@ -1,29 +1,29 @@
 package com.example.mortgagecalculator.db
 
+import android.provider.SyncStateContract.Helpers.insert
 import androidx.lifecycle.LiveData
 import androidx.room.*
 
 @Dao
-interface InputDao {
+abstract class InputDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertInputs(input: Input)
+    abstract suspend fun insertInputs(input: Input)
 
     @Update
-    suspend fun updateInputs(input: Input)
+    abstract suspend fun updateInputs(input: Input)
 
     @Delete
-    suspend fun deleteInput(input: Input)
+    abstract suspend fun deleteInput(input: Input)
 
     @Query( "DELETE FROM inputs_table")
-    fun deleteAllInputs()
+    abstract fun deleteAllInputs()
 
-    @Query("SELECT count(id) FROM inputs_table")
-    suspend fun numberOfItemsInDB() : Int
+    @Query("SELECT * from inputs_table ORDER BY modified_at desc")
+    abstract suspend fun getAllInputs() : List<Input>
 
-    @Query("SELECT * from inputs_table")
-    fun getAllInputs() : LiveData<List<Input>>
-
+    @Query("SELECT count(savedInputsTitle) FROM inputs_table")
+    abstract suspend fun numberOfItemsInDB() : Int
 
 
 }

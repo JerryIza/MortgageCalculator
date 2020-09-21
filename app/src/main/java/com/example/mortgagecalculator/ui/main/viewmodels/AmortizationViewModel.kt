@@ -3,6 +3,7 @@ package com.example.mortgagecalculator.ui.main.viewmodels
 import android.icu.text.SimpleDateFormat
 import android.net.ParseException
 import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mortgagecalculator.db.Input
@@ -21,10 +22,6 @@ class AmortizationViewModel @ViewModelInject constructor(
 
     val inputs: MutableLiveData<Input> get() = _inputs
 
-    val extraPaymentsMap = mutableMapOf<String, Int>()
-
-    private val extraPaymentsLiveData: MutableMap<String, Int> get() = extraPaymentsMap
-
     var scheduleArrayList: ArrayList<AmortizationResults>? = null
 
     val scheduleLiveData: MutableLiveData<ArrayList<AmortizationResults>?> = MutableLiveData()
@@ -33,15 +30,16 @@ class AmortizationViewModel @ViewModelInject constructor(
     fun calculate(amortizationCalculator: AmortizationCalculator) {
 
         scheduleArrayList?.clear()
-        val calculatorResults = (amortizationCalculator.getAmortization(
-            inputs.value!!.loanAmount,
-            inputs.value!!.yearAmount,
-            inputs.value!!.interestAmount,
-            inputs.value!!.downAmount,
-            extraPaymentsLiveData
-        ))
+        val calculatorResults =
+            (amortizationCalculator.getAmortization(
+                inputs.value!!.loanAmount,
+                inputs.value!!.yearAmount,
+                inputs.value!!.interestAmount,
+                inputs.value!!.downAmount,
+                inputs.value!!.payments
+            )
+                    )
         val dateArrayList: ArrayList<String>? = ArrayList()
-
         fun getDates() {
             //today's date
             val cal = Calendar.getInstance()
@@ -50,8 +48,8 @@ class AmortizationViewModel @ViewModelInject constructor(
             val year = cal.get(Calendar.YEAR)
             var startDate = "$month/$day/$year"
             //replace today's date with new input if not empty
-            if (inputs.value!!.dateSimpleFormat != "") {
-                startDate = inputs.value!!.dateSimpleFormat
+            if (inputs.value!!.startDateFormat != "") {
+                startDate = inputs.value!!.startDateFormat
             }
             val parts = startDate.split("/".toRegex()).toTypedArray()
             //adding total quotas to selected month.
@@ -90,13 +88,37 @@ class AmortizationViewModel @ViewModelInject constructor(
                 )
             )
         }
+        println("my list " + scheduleArrayList)
         scheduleArrayList?.last()?.totalAmount = calculatorResults[0].totalAmount
         scheduleArrayList?.last()?.monthlyPayment = calculatorResults[0].monthlyPayment
     }
 
+    fun recurringPayments(dateArrayList: ArrayList<String>?) {
+        //will exclude this range from additional payments.
+        val startDate = inputs.value?.startDateFormat
+        val endDate = inputs.value?.endDateFormat
+        val inputFormatter = (SimpleDateFormat("MM/dd/yyyy"))
+        val outputFormatter = SimpleDateFormat("MMM yyyy")
+        val beginCalendar = Calendar.getInstance()
+        val finishCalendar = Calendar.getInstance()
+        try {
+            beginCalendar.time = inputFormatter.parse(startDate)
+            finishCalendar.time = inputFormatter.parse(endDate)
+            do {
+                // add one month to date per loop
+                val monthYear = outputFormatter.format(beginCalendar.time)
+                //Log.d("Date_Range", monthYear)
+                beginCalendar.add(Calendar.MONTH, 1)
+                dateArrayList?.add(monthYear)
+            } while (beginCalendar.before(finishCalendar))
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+        return
+    }
 
     fun graphProgressBlue() =
-        (inputs.value!!.loanAmount / scheduleArrayList?.last()?.totalAmount!!) * 100
+        (inputs.value!!.loanAmount.div(scheduleArrayList?.last()?.totalAmount!!)).times(100)
 
     fun graphProgressPink() = (scheduleArrayList?.last()!!.totalInterest.replace(Regex(","), "")
         .toDouble() / scheduleArrayList?.last()?.totalAmount!!) * 100
@@ -104,7 +126,6 @@ class AmortizationViewModel @ViewModelInject constructor(
     fun getProgress(position: String, total: String) =
         ((position.replace(Regex(","), "").toDouble()) / (total.replace(Regex(","), "")
             .toDouble())) * 100
-
 
     private fun getListDetails() {
         populateScheduleList()
@@ -115,23 +136,33 @@ class AmortizationViewModel @ViewModelInject constructor(
         scheduleArrayList = ArrayList()
     }
 
+
     init {
         getListDetails()
         _inputs.value = Input()
     }
 
-
     fun deleteAllInputs() = repository.deleteAll()
+
+    suspend fun deleteInput(input: Input): Any {
+        return repository.deleteInput(input)
+    }
+
+    suspend fun update(input: Input): Any {
+        return repository.updateInputs(input)
+    }
 
     suspend fun insertInputs(input: Input): Any {
         return repository.insertInputs(input)
     }
 
+    suspend fun getInputs() :List<Input>{
+        return repository.getAllInputs()
+    }
+
     suspend fun databaseSize(): Int {
         return repository.numberOfItemsInDB()
     }
-
-    val liveInputs = repository.getAllInputs()
 
 }
 

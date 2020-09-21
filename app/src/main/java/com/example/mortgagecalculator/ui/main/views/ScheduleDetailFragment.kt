@@ -36,7 +36,7 @@ class ScheduleDetailFragment : Fragment() {
             ViewModelProvider(this).get(AmortizationViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
         binding = DetailFragmentBinding.inflate(inflater, container, false)
-        val position = viewModel.inputs.value?.recyclerPosition
+        val position = viewModel.inputs.value?.epPosition
         val positionDetails = (position?.let { viewModel.scheduleArrayList?.get(it) })
         //don't get results at start, it is unnecessary, causes memory leak
         bindResults()
@@ -56,9 +56,10 @@ class ScheduleDetailFragment : Fragment() {
             else if (actionId == EditorInfo.IME_ACTION_DONE && binding.additionalPayment.text!!.isNotEmpty()) {
                 saveExtraPayment()
                 updateResults()
+                binding.additionalPayment.setSelection(binding.additionalPayment.length())
             } else {
                 //if empty, delete key for extra payment
-                viewModel.extraPaymentsMap.remove(position.toString())
+                viewModel.inputs.value!!.payments.remove(position.toString())
                 updateResults()
             }
             false
@@ -67,22 +68,39 @@ class ScheduleDetailFragment : Fragment() {
     }
 
     private fun bindResults() {
-        val position = viewModel.inputs.value?.recyclerPosition
-
+        val position = viewModel.inputs.value?.epPosition
         val positionDetails =
-            (viewModel.inputs.value?.recyclerPosition?.let { viewModel.scheduleArrayList?.get(it) })
-        binding.calMonth.text = positionDetails?.monthId.toString()
+            (viewModel.inputs.value?.epPosition?.let { viewModel.scheduleArrayList?.get(it) })
+        //exception logic, for the sake of time.
+        val cumulativePrincipal =
+            (viewModel.inputs.value!!.loanAmount - positionDetails!!.loanLeft.replace(Regex(","), "")
+                .toDouble())
+
+        binding.calMonth.text = positionDetails.monthId
         binding.monthlyInterest.text =
-            (positionDetails?.interest + " / " + viewModel.scheduleArrayList?.last()!!.monthlyPayment)
-        binding.totalInterest.text =
-            (positionDetails?.totalInterest + " / " + viewModel.scheduleArrayList?.last()!!.totalInterest)
+            (positionDetails.interest + " / " + viewModel.scheduleArrayList?.last()!!.monthlyPayment)
         binding.principal.text =
-            (positionDetails?.principal + " / " + viewModel.scheduleArrayList?.last()!!.monthlyPayment)
-        binding.loanLeft.text =
-            (positionDetails?.loanLeft.toString() + " / " + viewModel.inputs.value!!.loanAmount.toString())
+            (positionDetails.principal + " / " + viewModel.scheduleArrayList?.last()!!.monthlyPayment)
+        binding.totalInterest.text =
+            (positionDetails.totalInterest + " / " + viewModel.scheduleArrayList?.last()!!.totalInterest)
+        binding.totalPrincipal.text =
+            (String.format("%,.2f", cumulativePrincipal) + " / " + String.format(
+                "%,.2f",
+                viewModel.inputs.value!!.loanAmount
+            ))
+
+        binding.loanLeft.text = (positionDetails.loanLeft + " / " + String.format(
+            "%,.2f",
+            viewModel.inputs.value!!.loanAmount
+        ))
 
         binding.moInterestBar.progress = viewModel.getProgress(
-            positionDetails!!.interest,
+            positionDetails.interest,
+            viewModel.scheduleArrayList?.last()!!.monthlyPayment
+        ).toInt()
+
+        binding.moPrincipalBar.progress = viewModel.getProgress(
+            positionDetails.principal,
             viewModel.scheduleArrayList?.last()!!.monthlyPayment
         ).toInt()
 
@@ -91,19 +109,18 @@ class ScheduleDetailFragment : Fragment() {
             viewModel.scheduleArrayList?.last()!!.totalInterest
         ).toInt()
 
-        binding.moPrincipalBar.progress = viewModel.getProgress(
-            positionDetails.principal,
-            viewModel.scheduleArrayList?.last()!!.monthlyPayment
+        binding.totalPrincipalBar.progress = viewModel.getProgress(
+            (cumulativePrincipal.toString()),
+            viewModel.inputs.value!!.loanAmount.toString()
         ).toInt()
 
         binding.loanLeftBar.progress = viewModel.getProgress(
             positionDetails.loanLeft,
             viewModel.inputs.value!!.loanAmount.toString()
         ).toInt()
-
+        //set text
         if (positionDetails.additionalPayment.isNotEmpty()) {
-            binding.additionalPayment.text = Editable.Factory.getInstance()
-                .newEditable(viewModel.extraPaymentsMap[position.toString()].toString())
+            binding.additionalPayment.setText(viewModel.inputs.value!!.payments[position.toString()].toString())
         }
     }
 
@@ -164,27 +181,23 @@ class ScheduleDetailFragment : Fragment() {
         lineChart.setTouchEnabled(false)
         lineChart.setPinchZoom(false)
         lineChart.highlightValue(
-            viewModel.inputs.value?.recyclerPosition!!.toFloat(),
-            viewModel.scheduleArrayList!![viewModel.inputs.value?.recyclerPosition!!].interest.toFloat(),
+            viewModel.inputs.value?.epPosition!!.toFloat(),
+            viewModel.scheduleArrayList!![viewModel.inputs.value?.epPosition!!].interest.replace(
+                Regex(
+                    ","
+                ), ""
+            ).toFloat(),
             1
         )
         lineChart.description.text = "Months"
         lineChart.animateX(1800, Easing.EaseInExpo)
     }
 
-
-
     private fun saveExtraPayment() {
-        val extraAmount = binding.additionalPayment.text.toString().toInt()
-        binding.additionalPayment.text =
-            Editable.Factory.getInstance().newEditable(extraAmount.toString())
-        val extraPayments = Input(monthNumber = "", extraPayment = 0)
-        extraPayments.extraPayment = extraAmount.toString().toInt()
-        extraPayments.monthNumber = viewModel.inputs.value?.recyclerPosition.toString()
-        //saving position value and amount
-        viewModel.extraPaymentsMap[viewModel.inputs.value?.recyclerPosition.toString()] =
-            extraPayments.extraPayment
-        println("Object Map: " + viewModel.extraPaymentsMap)
+        val extraAmount = binding.additionalPayment.text.toString()
+        binding.additionalPayment.setText(extraAmount)
+        //set key and value
+        viewModel.inputs.value?.payments?.set(viewModel.inputs.value?.epPosition.toString(), (extraAmount.toInt()))
         return
     }
 

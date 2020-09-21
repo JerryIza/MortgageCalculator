@@ -9,7 +9,6 @@ data class AmortizationResults(
     var totalAmount: Double? = null,
     var monthlyPayment: String = "",
     var additionalPayment: String = ""
-
 )
 
 

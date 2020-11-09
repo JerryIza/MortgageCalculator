@@ -30,7 +30,7 @@ class SaveFragment : Fragment() {
 
     private lateinit var binding: SaveFragmentBinding
 
-    //by activityViewModels creates view model scope for the whole activity. vs by viewmodels = individual fragment
+    //"by activityViewModels" creates viewmodel scope for the whole activity compared to "by viewmodels" = individual fragment
     private val viewModel: AmortizationViewModel by activityViewModels()
 
     private lateinit var adapter: SaveAdapter

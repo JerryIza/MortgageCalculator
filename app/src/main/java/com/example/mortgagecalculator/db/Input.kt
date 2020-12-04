@@ -14,7 +14,7 @@ data class Input @JvmOverloads constructor(
     var createdAt: Long = 0,
     @ColumnInfo(name = "modified_at")
     var modifiedAt: Long = 0,
-    var loanAmount: Double = 0.0,
+    var loanAmount: Double =200000.0,
     var yearAmount: Int = 0,
     var yearSpinnerPos: Int = 1,
     var interestAmount: Double = 3.50,

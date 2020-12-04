@@ -202,7 +202,7 @@ class ScheduleDetailFragment : Fragment() {
     }
 
     private fun updateResults() {
-        viewModel.calculate(AmortizationCalculator())
+        viewModel.getCalculationResults()
         scheduleRecycler?.adapter?.notifyDataSetChanged()
         bindResults()
         setUpLineChart()

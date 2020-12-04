@@ -10,10 +10,8 @@ import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
 import android.widget.EditText
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.mortgagecalculator.databinding.InputFragmentBinding
-import com.example.mortgagecalculator.model.AmortizationCalculator
 import com.example.mortgagecalculator.model.AmortizationResults
 import com.example.mortgagecalculator.ui.main.viewmodels.AmortizationViewModel
 import com.github.mikephil.charting.data.PieData
@@ -34,7 +32,7 @@ class InputFragment : Fragment() {
     lateinit var viewModel: AmortizationViewModel
 
     //Getting Today's Date
-    val cal: Calendar = Calendar.getInstance()
+    private val cal: Calendar = Calendar.getInstance()
     private val month = cal.get(Calendar.MONTH)
     private val day = cal.get(Calendar.DAY_OF_MONTH)
     private val year = cal.get(Calendar.YEAR)
@@ -43,7 +41,7 @@ class InputFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = InputFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -80,11 +78,10 @@ class InputFragment : Fragment() {
 
 
     fun getResults() {
-        viewModel.calculate(AmortizationCalculator())
+        viewModel.getCalculationResults()
         scheduleRecycler?.adapter?.notifyDataSetChanged()
         setupObservers()
-        setUpPieChart()
-}
+    }
 
     private fun editTextLoan(inputNumber: EditText) {
         inputNumber.setOnEditorActionListener { _, actionId, _ ->
@@ -122,7 +119,10 @@ class InputFragment : Fragment() {
     private fun editTextDownPayment(inputNumber: EditText) {
         inputNumber.setOnEditorActionListener { _, actionId, _ ->
             if (inputNumber.text!!.isNotEmpty() && actionId == EditorInfo.IME_ACTION_DONE) {
-                viewModel.inputs.value?.downAmount = inputNumber.text.toString().toDouble()
+
+                viewModel.inputs.value?.downAmount =
+                    inputNumber.text.replace(Regex(","), "").toDouble()
+
                 //setting new var values to dataclass in ViewModel State.
                 getResults()
                 binding.mortgageDown.setSelection(binding.mortgageInterest.length())
@@ -180,8 +180,11 @@ class InputFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        viewModel.scheduleLiveData.observe(viewLifecycleOwner, Observer {
-            bindResults(it!!.last())
+        viewModel.scheduleLiveData.observe(viewLifecycleOwner, {
+            if (!it.isNullOrEmpty()) {
+                bindResults(it.last())
+                setUpPieChart()
+            }
         })
     }
 
@@ -255,23 +258,26 @@ class InputFragment : Fragment() {
         chart.setTransparentCircleColor(transparentColor)
         chart.setTransparentCircleAlpha(9000)
         chart.description.text = ""
-
         val yValue = ArrayList<PieEntry>()
 
-        yValue.add(PieEntry(viewModel.graphProgressPink().toFloat(), "Interest %"))
-        yValue.add(PieEntry(viewModel.graphProgressBlue().toFloat(), "Principal %"))
+        viewModel.getPieChartProgress()?.let { PieEntry(it.toFloat(), "Interest %") }?.let {
+            yValue.add(
+                PieEntry(100 - it.value, "Interest %")
+            )
+        }
+        viewModel.getPieChartProgress()?.let { PieEntry(it.toFloat(), "Principal %") }?.let {
+            yValue.add(
+                it
+            )
+        }
 
         val blueColor = Color.parseColor("#61CFF8")
         val pinkColor = Color.parseColor("#FE657A")
-
         val dataSet = PieDataSet(yValue, "")
-
         dataSet.colors = mutableListOf<Int>(pinkColor, blueColor)
-
         val pieData = PieData(dataSet)
         pieData.setValueTextSize(12f)
         pieData.setValueTextColor(Color.WHITE)
-
         chart.data = pieData // set data and notifyDataSetChange
         chart.invalidate() // refresh chart
     }
@@ -280,4 +286,3 @@ class InputFragment : Fragment() {
 }
 
 
-/*viewModel.scheduleLiveData.observe(viewLifecycleOwner, Observer {})*/

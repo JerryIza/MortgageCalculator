@@ -10,7 +10,6 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mortgagecalculator.R
 import com.example.mortgagecalculator.databinding.ScheduleFragmentBinding
-import com.example.mortgagecalculator.model.AmortizationCalculator
 import com.example.mortgagecalculator.ui.main.adapters.ScheduleAdapter
 import com.example.mortgagecalculator.ui.main.viewmodels.AmortizationViewModel
 import kotlinx.android.synthetic.main.accept_dialog.*
@@ -109,7 +108,7 @@ class ScheduleFragment : Fragment() {
                         i.toString(), (editText.text.toString().toInt())
                     )
                 }
-                viewModel.calculate(AmortizationCalculator())
+                viewModel.getCalculationResults()
                 adapter.notifyDataSetChanged()
                 viewModel.updateExtraPaymentSize()
                 dialog.dismiss()
@@ -137,7 +136,7 @@ class ScheduleFragment : Fragment() {
         }
         confirm.setOnClickListener {
             viewModel.inputs.value!!.payments.clear()
-            viewModel.calculate(AmortizationCalculator())
+            viewModel.getCalculationResults()
             adapter.notifyDataSetChanged()
             dialog.dismiss()
 

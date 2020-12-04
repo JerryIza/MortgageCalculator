@@ -9,6 +9,7 @@ import android.view.Window
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mortgagecalculator.R
@@ -42,7 +43,7 @@ class SaveFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val navController = Navigation.findNavController(requireActivity(), R.id.navHostFragment)
         setupObservers()
         binding = SaveFragmentBinding.inflate(inflater, container, false)
@@ -113,7 +114,7 @@ class SaveFragment : Fragment() {
                 )
             }
             //order is very important
-            viewModel.calculate(AmortizationCalculator())
+            viewModel.getCalculationResults()
             dummyInputs.clear()
             adapter.notifyDataSetChanged()
             updateList()
@@ -131,7 +132,7 @@ class SaveFragment : Fragment() {
         deleteButton.setOnClickListener {
             viewModel.inputs.value = adapter.getItem(position)
             setupObservers()
-            GlobalScope.launch(Dispatchers.Main) {
+            lifecycleScope.launch(Dispatchers.Main) {
                 viewModel.deleteInput(viewModel.inputs.value!!)
                 adapter.notifyDataSetChanged()
                 updateList()

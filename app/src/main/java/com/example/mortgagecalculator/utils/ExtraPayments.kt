@@ -4,11 +4,10 @@ import android.icu.text.SimpleDateFormat
 import android.net.ParseException
 import com.example.mortgagecalculator.db.Input
 import java.util.*
-import kotlin.collections.ArrayList
 
 object ExtraPayments {
 
-    fun recurringPayments(dateArrayList: ArrayList<String>?, inputs: Input) {
+    fun recurringPayments(excludedList: ArrayList<String>?, inputs: Input): Int {
         //will exclude this range from additional payments.
         val startDate = inputs.startDateFormat
         val endDate = inputs.endDateFormat
@@ -20,15 +19,25 @@ object ExtraPayments {
             beginCalendar.time = inputFormatter.parse(startDate)
             finishCalendar.time = inputFormatter.parse(endDate)
             do {
-                // add one month to date per loop
                 val monthYear = outputFormatter.format(beginCalendar.time)
-                //Log.d("Date_Range", monthYear)
+
+                // add one month to date per loop
+                println(monthYear)
+
                 beginCalendar.add(Calendar.MONTH, 1)
-                dateArrayList?.add(monthYear)
+                excludedList?.add(monthYear)
+
             } while (beginCalendar.before(finishCalendar))
         } catch (e: ParseException) {
             e.printStackTrace()
         }
-        return
+
+        return if (excludedList!!.first() != excludedList.last()) {
+            excludedList.size
+        } else {
+            excludedList.size - 1
+        }
     }
+
+
 }

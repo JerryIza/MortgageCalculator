@@ -251,7 +251,7 @@
                     android:fontFamily="@font/roboto_mono"
                     android:hint="Extra Payment"
                     android:imeOptions="actionDone"
-                    android:inputType="numberDecimal"
+                    android:inputType="number"
                     android:textAlignment="center" />
             </com.google.android.material.textfield.TextInputLayout>
 

@@ -1,4 +1,4 @@
-package com.example.mortgagecalculator.ui.main.views
+package com.example.mortgagecalculator.ui.main.fragments
 
 import android.os.Bundle
 import android.text.Editable

@@ -1,4 +1,4 @@
-package com.example.mortgagecalculator.ui.main.views
+package com.example.mortgagecalculator.ui.main.fragments
 
 import android.app.DatePickerDialog
 import android.graphics.Color
@@ -11,6 +11,7 @@ import android.widget.AdapterView
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.mortgagecalculator.databinding.InputFragmentBinding
 import com.example.mortgagecalculator.model.AmortizationResults
 import com.example.mortgagecalculator.ui.main.viewmodels.AmortizationViewModel
@@ -19,7 +20,6 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import kotlinx.android.synthetic.main.schedule_fragment.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
@@ -51,29 +51,8 @@ class InputFragment : Fragment() {
         viewModel = activity?.run {
             ViewModelProvider(this).get(AmortizationViewModel::class.java)
         } ?: throw Exception("invalid Activity")
+        lifecycleScope.launch { setUpInputs() }
 
-
-        if (viewModel.inputs.value?.loanAmount == 0.0) {
-            GlobalScope.launch(Dispatchers.Main) {
-                if (viewModel.databaseSize() != 0) {
-                    viewModel.inputs.value = viewModel.getInputs()[0]
-                }
-                viewModel.inputs.value?.yearSpinnerPos?.let { binding.yearSpinner.setSelection(it) }
-                editTextLoan(binding.mortgageLoan)
-                editTextInterest(binding.mortgageInterest)
-                editTextDownPayment(binding.mortgageDown)
-                selectYear()
-                pickDate()
-                getResults()
-            }
-        } else {
-            viewModel.inputs.value?.yearSpinnerPos?.let { binding.yearSpinner.setSelection(it) }
-            editTextLoan(binding.mortgageLoan)
-            editTextInterest(binding.mortgageInterest)
-            editTextDownPayment(binding.mortgageDown)
-            selectYear()
-            pickDate()
-        }
     }
 
 
@@ -125,8 +104,10 @@ class InputFragment : Fragment() {
 
                 //setting new var values to dataclass in ViewModel State.
                 getResults()
-                binding.mortgageDown.setSelection(binding.mortgageInterest.length())
-
+                try {
+                    binding.mortgageDown.setSelection(binding.mortgageInterest.length())
+                } catch (e: IndexOutOfBoundsException) {
+                }
 
             } else if (actionId == EditorInfo.IME_ACTION_DONE) {
                 viewModel.inputs.value?.downAmount = 0.0
@@ -149,6 +130,30 @@ class InputFragment : Fragment() {
                 viewModel.inputs.value?.yearAmount = s
                 getResults()
             }
+        }
+    }
+
+    private suspend fun setUpInputs() {
+        //loading db inputs once
+        if (viewModel.inputs.value?.loanAmount == 0.0) {
+            lifecycleScope.launch(Dispatchers.Main) {
+                if (viewModel.databaseSize() != 0) {
+                    viewModel.inputs.value = viewModel.getInputs()[0]
+                }
+                viewModel.inputs.value?.yearSpinnerPos?.let { binding.yearSpinner.setSelection(it) }
+                editTextLoan(binding.mortgageLoan)
+                editTextInterest(binding.mortgageInterest)
+                editTextDownPayment(binding.mortgageDown)
+                selectYear()
+                pickDate()
+            }
+        } else {
+            viewModel.inputs.value?.yearSpinnerPos?.let { binding.yearSpinner.setSelection(it) }
+            editTextLoan(binding.mortgageLoan)
+            editTextInterest(binding.mortgageInterest)
+            editTextDownPayment(binding.mortgageDown)
+            selectYear()
+            pickDate()
         }
     }
 
@@ -281,7 +286,6 @@ class InputFragment : Fragment() {
         chart.data = pieData // set data and notifyDataSetChange
         chart.invalidate() // refresh chart
     }
-
 
 }
 

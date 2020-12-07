@@ -1,4 +1,4 @@
-package com.example.mortgagecalculator.ui.main.views
+package com.example.mortgagecalculator.ui.main.fragments
 
 import android.graphics.Color
 import android.os.Bundle
@@ -10,7 +10,7 @@ import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.mortgagecalculator.databinding.DetailFragmentBinding
-import com.example.mortgagecalculator.model.AmortizationCalculator
+import com.example.mortgagecalculator.model.AmortizationResults
 import com.example.mortgagecalculator.ui.main.viewmodels.AmortizationViewModel
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.data.Entry
@@ -29,16 +29,14 @@ class ScheduleDetailFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         viewModel = activity?.run {
             ViewModelProvider(this).get(AmortizationViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
         binding = DetailFragmentBinding.inflate(inflater, container, false)
         val position = viewModel.inputs.value?.epPosition
         val positionDetails = (position?.let { viewModel.scheduleArrayList?.get(it) })
-        //don't get results at start, it is unnecessary, causes memory leak
-        bindResults()
-        setUpLineChart()
+        setUpObservers()
 
         val maximumExtraPayment = positionDetails?.loanLeft!!.replace(Regex(","), "").toFloat()
 
@@ -55,34 +53,41 @@ class ScheduleDetailFragment : Fragment() {
                 saveExtraPayment()
                 updateResults()
                 binding.additionalPayment.setSelection(binding.additionalPayment.length())
-                viewModel.updateExtraPaymentSize()
             } else {
                 //if empty, delete key for extra payment
                 viewModel.inputs.value!!.payments.remove(position.toString())
                 updateResults()
-                viewModel.updateExtraPaymentSize()
             }
             false
         }
         return binding.root
     }
 
-    private fun bindResults() {
+    private fun setUpObservers() {
+        viewModel.scheduleLiveData.observe(viewLifecycleOwner, {
+            bindResults(it)
+        })
+
+    }
+
+    private fun bindResults(amortizationResults: ArrayList<AmortizationResults>?, ) {
         val position = viewModel.inputs.value?.epPosition
         val positionDetails =
             (viewModel.inputs.value?.epPosition?.let { viewModel.scheduleArrayList?.get(it) })
-        //exception logic, for the sake of time.
+
         val cumulativePrincipal =
-            (viewModel.inputs.value!!.loanAmount - positionDetails!!.loanLeft.replace(Regex(","), "")
-                .toDouble())
+            (viewModel.inputs.value!!.loanAmount - positionDetails!!.loanLeft.replace(
+                Regex(","),
+                ""
+            ).toDouble())
 
         binding.calMonth.text = positionDetails.monthId
         binding.monthlyInterest.text =
-            (positionDetails.interest + " / " + viewModel.scheduleArrayList?.last()!!.monthlyPayment)
+            (positionDetails.interest + " / " + amortizationResults!!.last().monthlyPayment)
         binding.principal.text =
-            (positionDetails.principal + " / " + viewModel.scheduleArrayList?.last()!!.monthlyPayment)
+            (positionDetails.principal + " / " + amortizationResults.last().monthlyPayment)
         binding.totalInterest.text =
-            (positionDetails.totalInterest + " / " + viewModel.scheduleArrayList?.last()!!.totalInterest)
+            (positionDetails.totalInterest + " / " + amortizationResults.last().totalInterest)
         binding.totalPrincipal.text =
             (String.format("%,.2f", cumulativePrincipal) + " / " + String.format(
                 "%,.2f",
@@ -96,17 +101,17 @@ class ScheduleDetailFragment : Fragment() {
 
         binding.moInterestBar.progress = viewModel.getProgress(
             positionDetails.interest,
-            viewModel.scheduleArrayList?.last()!!.monthlyPayment
+            amortizationResults.last().monthlyPayment
         ).toInt()
 
         binding.moPrincipalBar.progress = viewModel.getProgress(
             positionDetails.principal,
-            viewModel.scheduleArrayList?.last()!!.monthlyPayment
+            amortizationResults.last().monthlyPayment
         ).toInt()
 
         binding.interestBar.progress = viewModel.getProgress(
             positionDetails.totalInterest,
-            viewModel.scheduleArrayList?.last()!!.totalInterest
+            amortizationResults.last().totalInterest
         ).toInt()
 
         binding.totalPrincipalBar.progress = viewModel.getProgress(
@@ -122,18 +127,19 @@ class ScheduleDetailFragment : Fragment() {
         if (positionDetails.additionalPayment.isNotEmpty()) {
             binding.additionalPayment.setText(viewModel.inputs.value!!.payments[position.toString()].toString())
         }
+
+        setUpLineChart(amortizationResults)
     }
 
-    private fun setUpLineChart() {
+    private fun setUpLineChart(entries: ArrayList<AmortizationResults>?) {
         val lineChart = binding.lineChart
-        val scheduleSize = viewModel.scheduleArrayList!!.size - 1
+        val scheduleSize = entries!!.size - 1
         val entries1 = ArrayList<Entry>()
         val entries2 = ArrayList<Entry>()
-
         for (i in 0..scheduleSize) {
             entries1.add(
                 Entry(
-                    i.toFloat(), viewModel.scheduleArrayList!![i].interest.replace(
+                    i.toFloat(), entries[i].interest.replace(
                         Regex(
                             ","
                         ), ""
@@ -142,7 +148,7 @@ class ScheduleDetailFragment : Fragment() {
             )
             entries2.add(
                 Entry(
-                    i.toFloat(), viewModel.scheduleArrayList!![i].principal.replace(
+                    i.toFloat(), entries[i].principal.replace(
                         Regex(
                             ","
                         ), ""
@@ -182,7 +188,7 @@ class ScheduleDetailFragment : Fragment() {
         lineChart.setPinchZoom(false)
         lineChart.highlightValue(
             viewModel.inputs.value?.epPosition!!.toFloat(),
-            viewModel.scheduleArrayList!![viewModel.inputs.value?.epPosition!!].interest.replace(
+            entries[viewModel.inputs.value?.epPosition!!].interest.replace(
                 Regex(
                     ","
                 ), ""
@@ -197,15 +203,16 @@ class ScheduleDetailFragment : Fragment() {
         val extraAmount = binding.additionalPayment.text.toString()
         binding.additionalPayment.setText(extraAmount)
         //set key and value
-        viewModel.inputs.value?.payments?.set(viewModel.inputs.value?.epPosition.toString(), (extraAmount.toInt()))
+        viewModel.inputs.value?.payments?.set(
+            viewModel.inputs.value?.epPosition.toString(),
+            (extraAmount.toInt())
+        )
         return
     }
 
     private fun updateResults() {
         viewModel.getCalculationResults()
         scheduleRecycler?.adapter?.notifyDataSetChanged()
-        bindResults()
-        setUpLineChart()
     }
 }
 

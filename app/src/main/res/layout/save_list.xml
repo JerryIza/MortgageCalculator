@@ -76,7 +76,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:fontFamily="@font/roboto_slab"
-        android:text="Number of Extra Payments: 10"
+        android:text="Includes Extra Payments:  Yes"
         app:layout_constraintStart_toStartOf="@+id/saveYearAmount"
         app:layout_constraintTop_toBottomOf="@+id/saveYearAmount" />
 

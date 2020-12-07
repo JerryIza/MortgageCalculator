@@ -1,4 +1,4 @@
-package com.example.mortgagecalculator.ui.main.views
+package com.example.mortgagecalculator.ui.main.fragments
 
 import android.app.Dialog
 import android.os.Bundle
@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mortgagecalculator.R
 import com.example.mortgagecalculator.databinding.SaveFragmentBinding
 import com.example.mortgagecalculator.db.Input
-import com.example.mortgagecalculator.model.AmortizationCalculator
 import com.example.mortgagecalculator.ui.main.adapters.SaveAdapter
 import com.example.mortgagecalculator.ui.main.viewmodels.AmortizationViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,7 +35,7 @@ class SaveFragment : Fragment() {
 
     private lateinit var adapter: SaveAdapter
 
-    private lateinit var dummyInputs: ArrayList<Input>
+    private lateinit var listInputs: ArrayList<Input>
 
 
     override fun onCreateView(
@@ -45,7 +44,6 @@ class SaveFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val navController = Navigation.findNavController(requireActivity(), R.id.navHostFragment)
-        setupObservers()
         binding = SaveFragmentBinding.inflate(inflater, container, false)
 
 
@@ -63,9 +61,10 @@ class SaveFragment : Fragment() {
         updateList()
     }
 
+
     private fun setupRecyclerView() {
-        dummyInputs = arrayListOf(Input())
-        adapter = SaveAdapter(requireContext(), dummyInputs) { showDialog(it) }
+        listInputs = arrayListOf(Input())
+        adapter = SaveAdapter(requireContext(), listInputs) { showDialog(it) }
         binding.saveRv.layoutManager = LinearLayoutManager(requireContext())
         binding.saveRv.adapter = adapter
         adapter.notifyDataSetChanged()
@@ -76,11 +75,6 @@ class SaveFragment : Fragment() {
         }
     }
 
-    private fun setupObservers() {
-        viewModel.inputs.observe(viewLifecycleOwner, Observer {
-            binding.selectedInputView.text = ("Inputs selected: ${it.savedInputsTitle}")
-        })
-    }
 
     private fun showDialog(position: Int) {
         val dialog = activity?.let { Dialog(it) }
@@ -97,7 +91,7 @@ class SaveFragment : Fragment() {
             viewModel.inputs.value = adapter.getItem(position)
             adapter.notifyDataSetChanged()
             //load inputs, re-save to change timestamp. seems redundant
-            GlobalScope.launch(Dispatchers.Main){
+            lifecycleScope.launch(Dispatchers.Main){
                 viewModel.insertInputs(
                     Input(
                         savedInputsTitle = viewModel.inputs.value!!.savedInputsTitle,
@@ -115,7 +109,7 @@ class SaveFragment : Fragment() {
             }
             //order is very important
             viewModel.getCalculationResults()
-            dummyInputs.clear()
+            listInputs.clear()
             adapter.notifyDataSetChanged()
             updateList()
             dialog.dismiss()
@@ -131,7 +125,6 @@ class SaveFragment : Fragment() {
 
         deleteButton.setOnClickListener {
             viewModel.inputs.value = adapter.getItem(position)
-            setupObservers()
             lifecycleScope.launch(Dispatchers.Main) {
                 viewModel.deleteInput(viewModel.inputs.value!!)
                 adapter.notifyDataSetChanged()
@@ -139,9 +132,6 @@ class SaveFragment : Fragment() {
             }
             dialog.dismiss()
         }
-
-
-
     }
 }
 
